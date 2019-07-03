@@ -21,12 +21,16 @@ X_test: n_test * target_width * target_height * 3, where n_test is the number of
 Y_train: n_train
 Y_test: n_test
 
-The labels are integers from 0 to c - 1, where c is the number of 
+The labels are integers from 0 to c - 1, where c is the number of types of glitches determined by the operation_list (line147 in generator_functions.py). Right now the labels are:
 
-
-
+0: normal image
+1: vertical pattern (Morse code pattern)
+2: slant pattern
+3: checkerboard
+4: blurring
+5: vertical line (Random color and position)
 
 #### Changing the Type and Frequency of Glitches
 
-Modify the weight_list (line 147 in generator_functions.py) to change the relative frequency of different glitches. 
-Modify the operation_list (line143 in generator_functions.py) to include different types of glitches.
+Modify the weight_list (line 151 in generator_functions.py) to change the relative frequency of different glitches. 
+Modify the operation_list (line147 in generator_functions.py) to include different types of glitches.
