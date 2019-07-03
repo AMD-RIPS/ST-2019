@@ -84,7 +84,7 @@ def add_blurring(blur_type, img):
 
 def add_lines(line_type, img):
 	line_width = 3
-	glitch_freq = 0.18
+	glitch_freq = 0.08
 
 	if line_type == "horizontal":
 		img = img.transpose(1,0,2)
@@ -130,8 +130,8 @@ def transform_list(imgs_list):
 	num_pics = len(imgs_list)
 
 	checker_intermit_random = partial(add_checkerboard_pattern, 1, 1)
-	checker_non_intermit_random = partial(add_checkerboard_pattern, 1, 0)
-	checker_intermit_non_random = partial(add_checkerboard_pattern, 0, 1)
+	checker_non_intermit_random = partial(add_checkerboard_pattern, 0, 1)
+	checker_intermit_non_random = partial(add_checkerboard_pattern, 1, 0)
 	checker_non_intermit_non_random = partial(add_checkerboard_pattern, 0, 0)
 
 	avg_blurring = partial(add_blurring, "avg")
@@ -140,13 +140,16 @@ def transform_list(imgs_list):
 	vertical_line = partial(add_lines, "vertical")
 	horizontal_line = partial(add_lines, "horizontal")
 
-	operation_list = [identity, add_vertical_pattern, add_slant_pattern, checker_intermit_random, \
-	checker_non_intermit_random, checker_intermit_non_random, checker_non_intermit_non_random, \
-	avg_blurring, bilateral_blurring, vertical_line, horizontal_line]
+	# operation_list = [identity, add_vertical_pattern, add_slant_pattern, checker_intermit_random, \
+	# checker_non_intermit_random, checker_intermit_non_random, checker_non_intermit_non_random, \
+	# avg_blurring, vertical_line, horizontal_line]
 
-	weight_list = [7, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2]
-	# operation_list = [identity]
-	# weight_list = [1]
+	operation_list = [identity, add_vertical_pattern, add_slant_pattern, checker_intermit_non_random, \
+	avg_blurring, vertical_line]
+
+	# weight_list = [7, 2, 2, 1, 1, 1, 1, 2, 2, 2]
+	weight_list = [1,1,1,1,1,1]
+
 	index_list = []
 
 	total_index = 0
