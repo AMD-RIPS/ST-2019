@@ -9,6 +9,13 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
+def check_val(value):
+    if value > 255:
+        value = 255
+    if value < 0:
+        value = 0
+    return value
+
 def dotted_lines(picture):
     pic = picture.copy()
     height = pic.shape[0]
@@ -46,22 +53,28 @@ def square_patches(picture):
     pic = picture.copy()
     height = pic.shape[0]
     width = pic.shape[1]
-    number_of_patches = random.randint(2,10)
+    number_of_patches = random.randint(2,15)
 
     first_y = -1
     first_x = -1
 
+    r = int(random.uniform(0, 1)*255)
+    g = int(random.uniform(0, 1)*255)
+    b = int(random.uniform(0, 1)*255)
+
     for i in range(number_of_patches):
         size = random.randint(2,5)
+        red = check_val(r + random.randint(-30,30))
+        green = check_val(g + random.randint(-30,30))
+        blue = check_val(b + random.randint(-30,30))
+        color = [blue, green, red]
         if first_y < 0:
             first_y = random.randint(int(height*0.2), int(height*0.8))
             first_x = random.randint(int(width*0.2), int(width*0.8))
-            color = [int(random.uniform(0, 0.4)*255), int(random.uniform(0, 0.5)*255),int(random.uniform(0.6, 0.9)*255)]
             pic[first_y:(first_y+size), first_x:(first_x+size)] = color
         else:
             y = first_y +  random.randint(-int(height*0.1), int(height*0.1))
             x = first_x +  random.randint(-int(width*0.1), int(width*0.1))
-            color = [int(random.uniform(0, 0.4)*255), int(random.uniform(0, 0.5)*255),int(random.uniform(0.6, 0.9)*255)]
             pic[y:(y+size), x:(x+size)] = color
 
     return pic
