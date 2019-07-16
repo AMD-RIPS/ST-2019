@@ -1,3 +1,9 @@
+'''
+    The input is a python [Height * Width * 3] array, which is a picture to add glitches.
+    Notice that the input value should range from 0 to 255.
+    The output is a python [Height * Width * 3] array, which is a picture with glitch added.
+'''
+
 import cv2
 import random
 import matplotlib.pyplot as plt
