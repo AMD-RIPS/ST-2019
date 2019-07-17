@@ -314,8 +314,14 @@ if __name__ == '__main__':
 
 	count = 0
 
-	if options.input_foldername is None or options.output_foldername is None:
+	if options.input_foldername is None:
 		print("Please specify input and output folder name")
+
+	if options.output_foldername is None:
+		options.output_foldername = "new_output_folder"
+
+	if not os.path.isdir(options.output_foldername):
+		os.mkdir(options.output_foldername)
 
 
 	for video_path in os.listdir(options.input_foldername):
