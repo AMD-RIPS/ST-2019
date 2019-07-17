@@ -251,7 +251,10 @@ def add_shaders(im, lo = 1, hi = 3):
 	return gradient(output, color_blend(im, overlay1, overlay2, a1), a2)
 
 
-def write_files(original_img, img, is_margin_specified, filename, out, is_video):
+def write_files(original_img, img, is_margin_specified, filename, out, is_video, append_to_arr):
+	if append_to_arr:
+		X_orig_list.append(original_img)
+
 	if is_margin_specified:
 		original_img[x0:x1, y0:y1, :] = img
 	else:
@@ -262,13 +265,17 @@ def write_files(original_img, img, is_margin_specified, filename, out, is_video)
 	else:
 		out.write(original_img)
 
-
-
+	if append_to_arr:
+		X_glitched_list.append(original_img)
 
 
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
+
+	global X_orig_list, X_glitched_list
+	X_orig_list, X_glitched_list = [], []
+
 
 	# Values
 	parser.add_argument('-o', '--output', dest='output_foldername')
@@ -285,7 +292,7 @@ if __name__ == '__main__':
 
 	parser.add_argument('-ot', '--output_type', dest = 'output_type', default= 'image')
 	parser.add_argument('-save_normal_frames', dest= 'save_normal_frames', default = 'False')
-
+	parser.add_argument('-output_array', dest = 'output_array', default = 'False')
 
 	options = parser.parse_args()
 	global arg1, arg2, x0, y0, x1, y1
@@ -293,6 +300,7 @@ if __name__ == '__main__':
 	is_bound_specified = False
 	is_margin_specified = False
 	is_video = False
+	output_array = False
 	interval = int(options.interval)
 
 	if options.output_type == 'video' or options.output_type == 'Video':
@@ -312,6 +320,9 @@ if __name__ == '__main__':
 		y1 = int(options.y1)
 
 
+	if options.output_array == 'True' or options.output_array == 'true':
+		output_array = True
+
 	count = 0
 
 	if options.input_foldername is None:
@@ -330,13 +341,11 @@ if __name__ == '__main__':
 
 		cap = cv2.VideoCapture(os.path.join(options.input_foldername, video_path))
 		out = None
-		frame_width = 0
-		frame_height = 0
+		frame_width = int(cap.get(3))
+		frame_height = int(cap.get(4))
 		save_normal_frames = False
 
 		if is_video:
-			frame_width = int(cap.get(3))
-			frame_height = int(cap.get(4))
 			if options.glitch_type is None:
 				out = cv2.VideoWriter(os.path.join(options.output_foldername,str(count) + '_normal_video.avi'),cv2.VideoWriter_fourcc('M','J','P','G'), 60, (frame_width,frame_height))
 			else:
@@ -345,10 +354,11 @@ if __name__ == '__main__':
 		if options.save_normal_frames == 'True' or options.save_normal_frames == 'true':
 			save_normal_frames  = True
 
-
 		if not is_video and save_normal_frames and not os.path.isdir(os.path.join(options.output_foldername, 'normal')):
 			os.mkdir(os.path.join(options.output_foldername, 'normal'))
 
+		if output_array and not os.path.isdir(os.path.join(options.output_foldername, 'np_array')):
+			os.mkdir(os.path.join(options.output_foldername, 'np_array'))
 
 		this_count = 0
 		global prev_img
@@ -356,7 +366,6 @@ if __name__ == '__main__':
 			ret, original_img = cap.read()
 			if not ret:
 				break
-
 
 			img = np.copy(original_img)
 
@@ -366,14 +375,14 @@ if __name__ == '__main__':
 			if this_count % interval != 0:
 				this_count += 1
 				if save_normal_frames:
-					output_name = str(count) + "_normal.jpg"
+					output_name = str(count) + "_normal.png"
 					if is_video:
-						output_name = str(count)  + '_' + str(this_count)+ "_normal.jpg"
+						output_name = str(count)  + '_' + str(this_count)+ "_normal.png"
 					output_filename = os.path.join(options.output_foldername, 'normal')
 					output_filename = os.path.join(output_filename, output_name)
 					# print(output_filename)
 					new_img = img
-					write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video)
+					write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video, False)
 
 					if not is_video:
 						count += 1
@@ -383,9 +392,10 @@ if __name__ == '__main__':
 				prev_img = img
 
 			if options.glitch_type is None:
-				output_name = str(count) + "_normal.jpg"
+				output_name = str(count) + "_normal.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
+				# X_orig_list.append()
 				if not is_video:
 					count += 1
 
@@ -393,13 +403,13 @@ if __name__ == '__main__':
 				if this_count == 0:
 					this_count += 1
 					if save_normal_frames:
-						output_name = str(count) + "_normal.jpg"
+						output_name = str(count) + "_normal.png"
 						if is_video:
-							output_name = str(count)  + '_' + str(this_count)+ "_normal.jpg"
+							output_name = str(count)  + '_' + str(this_count)+ "_normal.png"
 						output_filename = os.path.join(options.output_foldername, 'normal')
 						output_filename = os.path.join(output_filename, output_name)
 						new_img = img
-						write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video)
+						write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video, False)
 					continue
 				
 				height, width, channels = img.shape
@@ -432,9 +442,9 @@ if __name__ == '__main__':
 					new_img[:, 0:target_width[0], :] = prev_img[:, 0:target_width[0], :]
 
 				prev_img = img
-				output_name = str(count) + "_screen_tearing.jpg"
+				output_name = str(count) + "_screen_tearing.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -442,28 +452,28 @@ if __name__ == '__main__':
 				# print(img.shape)
 				new_img = create_desktop_glitch_one(img)
 
-				output_name = str(count) + "_desktop_glitch_one.jpg"
+				output_name = str(count) + "_desktop_glitch_one.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, new_img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
 			if options.glitch_type == "desktop_glitch_two":
 				img = create_desktop_glitch_two(img)
 
-				output_name = str(count) + "_desktop_glitch_two.jpg"
+				output_name = str(count) + "_desktop_glitch_two.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
 			if options.glitch_type == "discoloration":
 				img = create_discoloration(img)
 
-				output_name = str(count) + "_discoloration.jpg"
+				output_name = str(count) + "_discoloration.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
 				# cv2.imwrite(output_filename, img)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -473,9 +483,9 @@ if __name__ == '__main__':
 				else:
 					img = add_random_patches(img)
 
-				output_name = str(count) + "_random_patch.jpg"
+				output_name = str(count) + "_random_patch.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -485,9 +495,9 @@ if __name__ == '__main__':
 				else:
 					img = add_shapes(img)
 
-				output_name = str(count) + "_shape.jpg"
+				output_name = str(count) + "_shape.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -497,9 +507,9 @@ if __name__ == '__main__':
 				else:
 					img = add_triangles(img)
 
-				output_name = str(count) + "_triangle.jpg"
+				output_name = str(count) + "_triangle.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -510,9 +520,9 @@ if __name__ == '__main__':
 				else:
 					img = add_shaders(img)
 
-				output_name = str(count) + "_shader.jpg"
+				output_name = str(count) + "_shader.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -522,9 +532,9 @@ if __name__ == '__main__':
 				else:
 					img = og.dotted_lines(img)
 
-				output_name = str(count) + "_dotted_line.jpg"
+				output_name = str(count) + "_dotted_line.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -534,9 +544,9 @@ if __name__ == '__main__':
 				else:
 					img = og.dotted_lines_radial(img)
 
-				output_name = str(count) + "_radial_dotted_line.jpg"
+				output_name = str(count) + "_radial_dotted_line.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -546,9 +556,9 @@ if __name__ == '__main__':
 				else:
 					img = og.parallel_lines(img)
 
-				output_name = str(count) + "_parallel_line.jpg"
+				output_name = str(count) + "_parallel_line.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -559,9 +569,9 @@ if __name__ == '__main__':
 				else:
 					img = og.square_patches(img)
 
-				output_name = str(count) + "_square_patch.jpg"
+				output_name = str(count) + "_square_patch.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
@@ -569,45 +579,45 @@ if __name__ == '__main__':
 			if options.glitch_type == 'texture_popin':
 				img = blurring(img)
 
-				output_name = str(count) + "_texture_popin.jpg"
+				output_name = str(count) + "_texture_popin.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
 			if options.glitch_type == 'random_triangulation':
 				img = triangulation(img, True)
 
-				output_name = str(count) + "_random_triangulation.jpg"
+				output_name = str(count) + "_random_triangulation.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
 			if options.glitch_type == 'regular_triangulation':
 				img = triangulation(img, False)
 
-				output_name = str(count) + "_regular_triangulation.jpg"
+				output_name = str(count) + "_regular_triangulation.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
 			if options.glitch_type == 'morse_code':
 				img = add_vertical_pattern(img)
 
-				output_name = str(count) + "_morse_code.jpg"
+				output_name = str(count) + "_morse_code.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 
 			if options.glitch_type == 'stuttering':
 				img = produce_stuttering(img)
 
-				output_name = str(count) + "_stuttering.jpg"
+				output_name = str(count) + "_stuttering.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
-				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
 					count += 1
 		
@@ -621,7 +631,14 @@ if __name__ == '__main__':
 			out.release()
 
 
+	if output_array:
+		X_orig = np.asarray(X_orig_list)
+		X_glitched = np.asarray(X_glitched_list)
 
+		output_folder = os.path.join(options.output_foldername, 'np_array')
+
+		np.save(os.path.join(output_folder, 'X_orig.npy'), X_orig)
+		np.save(os.path.join(output_folder, 'X_glitched.npy'), X_glitched)
 
 
 
