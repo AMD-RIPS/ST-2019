@@ -73,10 +73,11 @@ Combines two frames to form a new frame with vertical or horizontal screen-teari
 [discoloration, random_patch, shape, triangle, shader, dotted_line, square_patch, parallel_line, texture_popin, random_triangulation, regular_triangulation, morse_code, desktop_glitch_one, desktop_glitch_two, screen_tearing]\
 
 
-
 The inputs below are optional:\
 
+-ot: output type, either video or image. Default is image.\
 -interval: the number of frames skipped till the next glitch is added. Default value is 10.\
+-save_normal_frames: determines whether normal images (the frames that are skipped) are saved. Default value is False.\
 
 -lo: lower bound of number of glitches\
 -hi: upper bound of number of glitches\
@@ -90,7 +91,7 @@ The inputs below are optional:\
 
 #### Examples
 
-python3 glitchify.py -i input_folder -o output_folder -t screen_tearing -interval 20\
+python3 glitchify.py -i input_folder -o output_folder -t screen_tearing -ot video -interval 20 -save_normal_frames True\
 
 
 
