@@ -12,6 +12,7 @@ import random
 import imutils
 import ou_glitch.ou_glitch as og
 from triangulation.triangulation import triangulation
+from stuttering.stuttering import produce_stuttering
 
 
 def get_random_color():
@@ -578,6 +579,15 @@ if __name__ == '__main__':
 				img = add_vertical_pattern(img)
 
 				output_name = str(count) + "_morse_code.jpg"
+				output_filename = os.path.join(options.output_foldername, output_name)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				if not is_video:
+					count += 1
+
+			if options.glitch_type == 'stuttering':
+				img = produce_stuttering(img)
+
+				output_name = str(count) + "_stuttering.jpg"
 				output_filename = os.path.join(options.output_foldername, output_name)
 				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
 				if not is_video:

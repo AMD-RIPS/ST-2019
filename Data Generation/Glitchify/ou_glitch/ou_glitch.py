@@ -5,7 +5,7 @@
 '''
 
 import cv2
-import random
+import numpy.random as random
 import matplotlib.pyplot as plt
 import numpy as np
 
