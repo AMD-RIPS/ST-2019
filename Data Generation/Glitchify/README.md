@@ -25,45 +25,49 @@ Adds a random number (1~3) of shades of random color to the input frames.\
 
 Adds a random number (15~35) of dotted lines of random color to the input frames.\
 
-7. square_patch\
+7. radial_dotted_line\
+
+Adds a random number (30~60) of dotted lines of random color and radiation shape to the input frames.\
+
+8. square_patch\
 
 Adds a random number (2~15) of little square patches (pixelation) of random color to the input frames.\
 
-8. parallel_line\
+9. parallel_line\
 
 Adds a random number (60~100) of parallel lines to the input frames.\
 
-9. texture_popin\
+10. texture_popin\
 
 Randomly selects a region and then applies bilateral filter (blurring) on it.\
 
-10. random_triangulation\
+11. random_triangulation\
 
 Randomly selects a region and then dividing the region into random triangles using delaunay triangulation. The color of each triangle is determined by the weighted average of pixels within the triangle.\
 
-11. regular_triangulation\
+12. regular_triangulation\
 
 Randomly selects a region and then divides the region into isosceles right triangles. The color of each triangle is determined by the weighted average of pixels within the triangle.\
 
-12. morse_code\
+14. morse_code\
 
 Adds morse code pattern of random color and position to the input frames.\
 
 
-13. desktop_glitch_one\
+15. desktop_glitch_one\
 
 Randomly selects a region and sdds the first kind of desktop glitch (see examples) to the input frames.\
 
 
-14. desktop_glitch_two\
+16. desktop_glitch_two\
 
 Adds the second kind of desktop glitch (see examples) of random colors and positions the input frames.\
 
-15. screen_tearing\
+17. screen_tearing\
 
 Combines two frames to form a new frame with vertical or horizontal screen-tearing. The interval between two frames is determined by the "interval" input value.\
 
-16. stuttering\
+18. stuttering\
 
 Permutes rows and columns to produce stuttering frames.\
 
@@ -74,7 +78,7 @@ Permutes rows and columns to produce stuttering frames.\
 -i: name of input folder\
 
 -t: type of glitches.  Choose from the list: \
-[discoloration, random_patch, shape, triangle, shader, dotted_line, square_patch, parallel_line, texture_popin, random_triangulation, regular_triangulation, morse_code, desktop_glitch_one, desktop_glitch_two, screen_tearing, stuttering]\
+[discoloration, random_patch, shape, triangle, shader, dotted_line, radial_dotted_line, square_patch, parallel_line, texture_popin, random_triangulation, regular_triangulation, morse_code, desktop_glitch_one, desktop_glitch_two, screen_tearing, stuttering]\
 
 
 The inputs below are optional:\

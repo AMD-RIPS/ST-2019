@@ -51,7 +51,50 @@ def dotted_lines(picture, lo = 15, hi = 35):
 				pic[py,px] = [r,g,b]
 			else:
 				break   
-	return pic    
+	return pic   
+
+def dotted_lines_radial(picture, lo = 30, hi = 60):
+    pic = picture.copy()
+    height = pic.shape[0]
+    width = pic.shape[1]
+   # angle = random.randint(15,345)
+    number_of_lines = random.randint(lo,hi)
+
+    x = random.randint(int(0.2*width), int(0.8*width))
+    y = random.randint(int(0.2*height),int(0.8*height))
+
+    r = np.random.randint(0,256)
+    g = np.random.randint(0,256)
+    b = np.random.randint(0,256)
+
+    angle_step = np.floor(360 / number_of_lines)
+    initial_angle = random.randint(-10,10)
+
+
+    for i in np.arange(number_of_lines):
+        theta = initial_angle + angle_step * i + random.randint(-5,5)
+        radian = theta/180*np.pi
+        if np.cos(radian) >= 0:
+            hstep = random.choice([4,5,3,6])
+        else:
+            hstep = random.choice([4,5,3,6]) * -1
+        vstep = hstep*np.tan(radian)
+        for j in np.arange(random.randint(20,50)):
+            px = int(x + j*hstep)
+            py = int(y + j*vstep)
+            if px >= 0 and px <= width-1 and py >= 0 and py <= height-1:
+                u = random.uniform(0, 1)
+                if u > 0.9:
+                    nx = max(px-1, 0)
+                    pic[py,nx] = [r,g,b]
+                if u < 0.1:
+                    ny = max(py-1, 0)
+                    pic[ny,px] = [r,g,b]
+                pic[py,px] = [r,g,b]
+            else:
+                break   
+    return pic
+
 
 def square_patches(picture, lo = 2, hi = 15):
 	pic = picture.copy()

@@ -522,6 +522,18 @@ if __name__ == '__main__':
 				if not is_video:
 					count += 1
 
+			if options.glitch_type == 'radial_dotted_line':
+				if is_bound_specified:
+					img = og.dotted_lines_radial(img, arg1, arg2)
+				else:
+					img = og.dotted_lines_radial(img)
+
+				output_name = str(count) + "_radial_dotted_line.jpg"
+				output_filename = os.path.join(options.output_foldername, output_name)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
+				if not is_video:
+					count += 1
+
 			if options.glitch_type == 'parallel_line':
 				if is_bound_specified:
 					img = og.parallel_lines(img, arg1, arg2)
