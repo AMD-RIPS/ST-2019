@@ -570,20 +570,20 @@ if __name__ == '__main__':
 					count += 1
 
 			if options.glitch_type == 'random_triangulation':
-				img = triangulation(os.path.join(options.input_foldername, image_path), True)
+				img = triangulation(img, True)
 
 				output_name = str(count) + "_random_triangulation.jpg"
-				output_filename = os.path.join(options.output_foldername, output_name, out, is_video)
-				write_files(original_img, img, is_margin_specified, output_filename)
+				output_filename = os.path.join(options.output_foldername, output_name)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
 				if not is_video:
 					count += 1
 
 			if options.glitch_type == 'regular_triangulation':
-				img = triangulation(os.path.join(options.input_foldername, image_path), False)
+				img = triangulation(img, False)
 
 				output_name = str(count) + "_regular_triangulation.jpg"
-				output_filename = os.path.join(options.output_foldername, output_name, out, is_video)
-				write_files(original_img, img, is_margin_specified, output_filename)
+				output_filename = os.path.join(options.output_foldername, output_name)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video)
 				if not is_video:
 					count += 1
 
