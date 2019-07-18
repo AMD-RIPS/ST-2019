@@ -1,5 +1,13 @@
+#### Examples
+
+python3 glitchify.py -i input_folder -t screen_tearing
+
+python3 glitchify.py  -i input_folder -o output_folder -ot video  -interval 60  -save_normal_frames False -t discoloration -output_array True
+
+
 #### Description:
 
+This program takes in videos and adds selected glitches to the selected regions in the frames. The outputs are images (in png format and numpy arrays) or videos. The types of glitches are listed below:
 
 1. discoloration
 
@@ -104,12 +112,6 @@ The inputs below are optional:
 
 If set True, then the program will store two arrays X_orig.npy and X_glitched.npy in output_folder/np_array. X_gliched.npy contains glitched images, and X_orig.npy contains the corresponding non-glitched images (i.e. images before the glitches are added).
 
-
-#### Examples
-
-python3 glitchify.py -i input_folder -t screen_tearing
-
-python3 glitchify.py  -i input_folder -o output_folder -ot video  -interval 60  -save_normal_frames False -t discoloration -output_array True
 
 
 
