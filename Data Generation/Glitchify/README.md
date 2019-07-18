@@ -56,7 +56,7 @@ Adds morse code pattern of random color and position to the input frames.
 
 15. desktop_glitch_one
 
-Randomly selects a region and sdds the first kind of desktop glitch (see examples) to the input frames.
+Randomly selects a region and adds the first kind of desktop glitch (see examples) to the input frames.
 
 
 16. desktop_glitch_two
@@ -71,6 +71,10 @@ Combines two frames to form a new frame with vertical or horizontal screen-teari
 
 Permutes rows and columns to produce stuttering frames.
 
+19. line_pixelation
+
+Adds random line pixelations to the input frames.
+
 
 #### Input Arguments:
 
@@ -78,7 +82,7 @@ Permutes rows and columns to produce stuttering frames.
 -i: name of input folder
 
 -t: type of glitches.  Choose from the list: \
-[discoloration, random_patch, shape, triangle, shader, dotted_line, radial_dotted_line, square_patch, parallel_line, texture_popin, random_triangulation, regular_triangulation, morse_code, desktop_glitch_one, desktop_glitch_two, screen_tearing, stuttering]\
+[discoloration, random_patch, shape, triangle, shader, dotted_line, radial_dotted_line, square_patch, parallel_line, texture_popin, random_triangulation, regular_triangulation, morse_code, desktop_glitch_one, desktop_glitch_two, screen_tearing, stuttering, line_pixelation]
 
 
 The inputs below are optional:

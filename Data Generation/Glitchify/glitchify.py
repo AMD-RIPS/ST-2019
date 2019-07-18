@@ -13,6 +13,7 @@ import imutils
 import ou_glitch.ou_glitch as og
 from triangulation.triangulation import triangulation
 from stuttering.stuttering import produce_stuttering
+from line_pixelation.line_pixelation import line_pixelation
 
 
 def get_random_color():
@@ -616,6 +617,15 @@ if __name__ == '__main__':
 				img = produce_stuttering(img)
 
 				output_name = str(count) + "_stuttering.png"
+				output_filename = os.path.join(options.output_foldername, output_name)
+				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
+				if not is_video:
+					count += 1
+
+			if options.glitch_type == 'line_pixelation':
+				img = line_pixelation(img)
+
+				output_name = str(count) + "_line_pixelation.png"
 				output_filename = os.path.join(options.output_foldername, output_name)
 				write_files(original_img, img, is_margin_specified, output_filename, out, is_video, True)
 				if not is_video:
