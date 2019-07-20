@@ -10,7 +10,6 @@ interval = int(sys.argv[4])
 
 
 count = 0
-num_produced = 0
 
 
 def is_video_file(filename):
@@ -83,11 +82,12 @@ else:
 	file_count = 0
 	count = 0
 	for video_path in os.listdir(input_video_path):
-		print(video_path)
+		print("Processing: " + video_path)
 		if not is_video_file(video_path):
 			continue
 
 		cap = cv2.VideoCapture(os.path.join(input_video_path, video_path))
+		num_produced = 0
 
 		while(1):
 			ret,frame = cap.read()
