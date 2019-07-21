@@ -2,12 +2,14 @@
 
 python3 glitchify.py -i input_folder -t screen_tearing
 
-python3 glitchify.py  -i input_folder -o output_folder -ot video  -interval 60  -save_normal_frames False -t discoloration -output_array True
+python3 glitchify.py  -i input_folder -o output_folder -ot video  -interval 60 -t discoloration -output_array True
+
+python3 glitchify.py  -i input_folder -o output_folder -ot video  -interval 60 -t discoloration -output_array True -is_output_resized True new_height 224 new_width 256
 
 
 #### Description:
 
-This program takes in videos and adds selected glitches to the selected regions in the frames. The outputs are images (in png format and numpy arrays) or videos. The types of glitches are listed below:
+This program takes in videos and/or images, and adds selected glitches to the selected regions in the frames. The outputs are images (in png format and numpy arrays) or videos (in avi format). The types of glitches are listed below:
 
 1. discoloration
 
@@ -87,7 +89,7 @@ Adds random line pixelations to the input frames.
 #### Input Arguments:
 
 -o: name of output folder\
--i: name of input folder
+-i: name of input folder. The folder can contain images or videos or both.
 
 -t: type of glitches.  Choose from the list: \
 [discoloration, random_patch, shape, triangle, shader, dotted_line, radial_dotted_line, square_patch, parallel_line, texture_popin, random_triangulation, regular_triangulation, morse_code, desktop_glitch_one, desktop_glitch_two, screen_tearing, stuttering, line_pixelation]
@@ -96,8 +98,11 @@ Adds random line pixelations to the input frames.
 The inputs below are optional:
 
 -ot: output type, either video or image. Default is image.\
--interval: the number of frames skipped till the next glitch is added. Default value is 10.\
--save_normal_frames: determines whether normal images (the frames that are skipped) are saved. Default value is False.
+-interval: the number of frames skipped till the next glitch is added. Default value is 10.
+
+-is_output_resized: True or False.\
+-new_width: width of the resized output\
+-new_height: height of the resized output
 
 -lo: lower bound of number of glitches\
 -hi: upper bound of number of glitches

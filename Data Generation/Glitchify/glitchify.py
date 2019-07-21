@@ -254,7 +254,11 @@ def add_shaders(im, lo = 1, hi = 3):
 
 def write_files(original_img, img, is_margin_specified, filename, out, is_video, append_to_arr):
 	if append_to_arr:
-		X_orig_list.append(original_img)
+		if not is_output_resized:
+			X_orig_list.append(original_img)
+		else:
+			original_img = cv2.resize(original_img, (new_width, new_height))
+			X_orig_list.append(original_img)
 
 	if is_margin_specified:
 		original_img[x0:x1, y0:y1, :] = img
@@ -262,12 +266,63 @@ def write_files(original_img, img, is_margin_specified, filename, out, is_video,
 		original_img = img
 
 	if not is_video:
-		cv2.imwrite(filename, original_img)
+		if not is_output_resized:
+			cv2.imwrite(filename, original_img)
+		else:
+			original_img = cv2.resize(original_img ,(new_width, new_height))
+			cv2.imwrite(filename, original_img)
 	else:
-		out.write(original_img)
+		if not is_output_resized:
+			out.write(original_img)
+		else:
+			original_img = cv2.resize(original_img, (new_width, new_height))
+			out.write(original_img)
+
 
 	if append_to_arr:
-		X_glitched_list.append(original_img)
+		if not is_output_resized:
+			X_glitched_list.append(original_img)
+		else:
+			original_img = cv2.resize(original_img ,(new_width, new_height))
+			X_glitched_list.append(original_img)
+
+
+
+def is_video_file(filename):
+	video_file_extensions = (
+	'.264', '.3g2', '.3gp', '.3gp2', '.3gpp', '.3gpp2', '.3mm', '.3p2', '.60d', '.787', '.89', '.aaf', '.aec', '.aep', '.aepx',
+	'.aet', '.aetx', '.ajp', '.ale', '.am', '.amc', '.amv', '.amx', '.anim', '.aqt', '.arcut', '.arf', '.asf', '.asx', '.avb',
+	'.avc', '.avd', '.avi', '.avp', '.avs', '.avs', '.avv', '.axm', '.bdm', '.bdmv', '.bdt2', '.bdt3', '.bik', '.bin', '.bix',
+	'.bmk', '.bnp', '.box', '.bs4', '.bsf', '.bvr', '.byu', '.camproj', '.camrec', '.camv', '.ced', '.cel', '.cine', '.cip',
+	'.clpi', '.cmmp', '.cmmtpl', '.cmproj', '.cmrec', '.cpi', '.cst', '.cvc', '.cx3', '.d2v', '.d3v', '.dat', '.dav', '.dce',
+	'.dck', '.dcr', '.dcr', '.ddat', '.dif', '.dir', '.divx', '.dlx', '.dmb', '.dmsd', '.dmsd3d', '.dmsm', '.dmsm3d', '.dmss',
+	'.dmx', '.dnc', '.dpa', '.dpg', '.dream', '.dsy', '.dv', '.dv-avi', '.dv4', '.dvdmedia', '.dvr', '.dvr-ms', '.dvx', '.dxr',
+	'.dzm', '.dzp', '.dzt', '.edl', '.evo', '.eye', '.ezt', '.f4p', '.f4v', '.fbr', '.fbr', '.fbz', '.fcp', '.fcproject',
+	'.ffd', '.flc', '.flh', '.fli', '.flv', '.flx', '.gfp', '.gl', '.gom', '.grasp', '.gts', '.gvi', '.gvp', '.h264', '.hdmov',
+	'.hkm', '.ifo', '.imovieproj', '.imovieproject', '.ircp', '.irf', '.ism', '.ismc', '.ismv', '.iva', '.ivf', '.ivr', '.ivs',
+	'.izz', '.izzy', '.jss', '.jts', '.jtv', '.k3g', '.kmv', '.ktn', '.lrec', '.lsf', '.lsx', '.m15', '.m1pg', '.m1v', '.m21',
+	'.m21', '.m2a', '.m2p', '.m2t', '.m2ts', '.m2v', '.m4e', '.m4u', '.m4v', '.m75', '.mani', '.meta', '.mgv', '.mj2', '.mjp',
+	'.mjpg', '.mk3d', '.mkv', '.mmv', '.mnv', '.mob', '.mod', '.modd', '.moff', '.moi', '.moov', '.mov', '.movie', '.mp21',
+	'.mp21', '.mp2v', '.mp4', '.mp4v', '.mpe', '.mpeg', '.mpeg1', '.mpeg4', '.mpf', '.mpg', '.mpg2', '.mpgindex', '.mpl',
+	'.mpl', '.mpls', '.mpsub', '.mpv', '.mpv2', '.mqv', '.msdvd', '.mse', '.msh', '.mswmm', '.mts', '.mtv', '.mvb', '.mvc',
+	'.mvd', '.mve', '.mvex', '.mvp', '.mvp', '.mvy', '.mxf', '.mxv', '.mys', '.ncor', '.nsv', '.nut', '.nuv', '.nvc', '.ogm',
+	'.ogv', '.ogx', '.osp', '.otrkey', '.pac', '.par', '.pds', '.pgi', '.photoshow', '.piv', '.pjs', '.playlist', '.plproj',
+	'.pmf', '.pmv', '.pns', '.ppj', '.prel', '.pro', '.prproj', '.prtl', '.psb', '.psh', '.pssd', '.pva', '.pvr', '.pxv',
+	'.qt', '.qtch', '.qtindex', '.qtl', '.qtm', '.qtz', '.r3d', '.rcd', '.rcproject', '.rdb', '.rec', '.rm', '.rmd', '.rmd',
+	'.rmp', '.rms', '.rmv', '.rmvb', '.roq', '.rp', '.rsx', '.rts', '.rts', '.rum', '.rv', '.rvid', '.rvl', '.sbk', '.sbt',
+	'.scc', '.scm', '.scm', '.scn', '.screenflow', '.sec', '.sedprj', '.seq', '.sfd', '.sfvidcap', '.siv', '.smi', '.smi',
+	'.smil', '.smk', '.sml', '.smv', '.spl', '.sqz', '.srt', '.ssf', '.ssm', '.stl', '.str', '.stx', '.svi', '.swf', '.swi',
+	'.swt', '.tda3mt', '.tdx', '.thp', '.tivo', '.tix', '.tod', '.tp', '.tp0', '.tpd', '.tpr', '.trp', '.ts', '.tsp', '.ttxt',
+	'.tvs', '.usf', '.usm', '.vc1', '.vcpf', '.vcr', '.vcv', '.vdo', '.vdr', '.vdx', '.veg','.vem', '.vep', '.vf', '.vft',
+	'.vfw', '.vfz', '.vgz', '.vid', '.video', '.viewlet', '.viv', '.vivo', '.vlab', '.vob', '.vp3', '.vp6', '.vp7', '.vpj',
+	'.vro', '.vs4', '.vse', '.vsp', '.w32', '.wcp', '.webm', '.wlmp', '.wm', '.wmd', '.wmmp', '.wmv', '.wmx', '.wot', '.wp3',
+	'.wpl', '.wtv', '.wve', '.wvx', '.xej', '.xel', '.xesc', '.xfl', '.xlmv', '.xmv', '.xvid', '.y4m', '.yog', '.yuv', '.zeg',
+	'.zm1', '.zm2', '.zm3', '.zmv'  )
+
+	if filename.endswith((video_file_extensions)):
+		return True
+	else:
+		return False
 
 
 
@@ -294,15 +349,27 @@ if __name__ == '__main__':
 	parser.add_argument('-ot', '--output_type', dest = 'output_type', default= 'image')
 	parser.add_argument('-save_normal_frames', dest= 'save_normal_frames', default = 'False')
 	parser.add_argument('-output_array', dest = 'output_array', default = 'False')
+	parser.add_argument('-is_output_resized', dest = 'resize_output', default = 'False')
+	parser.add_argument('-new_height', dest = 'new_height', default = 224)
+	parser.add_argument('-new_width', dest = 'new_width', default = 224)
+
 
 	options = parser.parse_args()
-	global arg1, arg2, x0, y0, x1, y1
+	global arg1, arg2, x0, y0, x1, y1, is_output_resized, new_height, new_width
 
 	is_bound_specified = False
 	is_margin_specified = False
 	is_video = False
 	output_array = False
+	is_output_resized = False
 	interval = int(options.interval)
+	new_height = 224
+	new_width = 224
+
+	if options.resize_output == 'True' or options.resize_output == 'true':
+		is_output_resized = True
+		new_height = int(options.new_height)
+		new_width = int(options.new_width)
 
 	if options.output_type == 'video' or options.output_type == 'Video':
 		is_video = True
@@ -337,13 +404,32 @@ if __name__ == '__main__':
 
 
 	for video_path in os.listdir(options.input_foldername):
-		if not video_path.endswith('.mp4') and not video_path.endswith('.avi'):
+		is_image = False
+
+		if not is_video_file(video_path):
+			if video_path.endswith('.jpg') or video_path.endswith('.png'):
+				is_image = True
+			else:
+				continue
+
+		if is_image and is_video:
+			print("Input imgaes are skipped when producing glitched videos")
 			continue
 
-		cap = cv2.VideoCapture(os.path.join(options.input_foldername, video_path))
+		cap = None
+		frame_width = 0
+		frame_height = 0 
 		out = None
-		frame_width = int(cap.get(3))
-		frame_height = int(cap.get(4))
+
+		if not is_image:
+			cap = cv2.VideoCapture(os.path.join(options.input_foldername, video_path))
+			frame_width = int(cap.get(3))
+			frame_height = int(cap.get(4))
+
+			if is_output_resized:
+				frame_width = new_width
+				frame_height = new_height
+
 		save_normal_frames = False
 
 		if is_video:
@@ -352,7 +438,7 @@ if __name__ == '__main__':
 			else:
 				out = cv2.VideoWriter(os.path.join(options.output_foldername,str(count) + '_' + str(options.glitch_type) +'_video.avi'),cv2.VideoWriter_fourcc('M','J','P','G'), 60, (frame_width,frame_height))
 
-		if options.save_normal_frames == 'True' or options.save_normal_frames == 'true':
+		if options.save_normal_frames == 'True' or options.save_normal_frames == 'true' or is_video:
 			save_normal_frames  = True
 
 		if not is_video and save_normal_frames and not os.path.isdir(os.path.join(options.output_foldername, 'normal')):
@@ -364,9 +450,16 @@ if __name__ == '__main__':
 		this_count = 0
 		global prev_img
 		while(True):
-			ret, original_img = cap.read()
-			if not ret:
-				break
+			ret  =  False
+			original_img = None
+
+			if is_image:
+				ret = True
+				original_img = cv2.imread(os.path.join(options.input_foldername, video_path))
+			else:
+				ret, original_img = cap.read()
+				if not ret:
+					break
 
 			img = np.copy(original_img)
 
@@ -401,6 +494,10 @@ if __name__ == '__main__':
 					count += 1
 
 			if options.glitch_type == 'screen_tearing':
+				if is_image:
+					print("Single input image is skipped when producing screen tearing glitches")
+					break
+
 				if this_count == 0:
 					this_count += 1
 					if save_normal_frames:
@@ -469,6 +566,7 @@ if __name__ == '__main__':
 					count += 1
 
 			if options.glitch_type == "discoloration":
+				# print(img.shape)
 				img = create_discoloration(img)
 
 				output_name = str(count) + "_discoloration.png"
@@ -633,19 +731,27 @@ if __name__ == '__main__':
 		
 			this_count += 1
 
+			if is_image:
+				break
+
 		if is_video:
 			count += 1
-
-		cap.release()
+		if cap is not None:
+			cap.release()
 		if out is not None:
 			out.release()
 
 
 	if output_array:
+		output_folder = os.path.join(options.output_foldername, 'np_array')
 		X_orig = np.asarray(X_orig_list)
 		X_glitched = np.asarray(X_glitched_list)
 
-		output_folder = os.path.join(options.output_foldername, 'np_array')
+		print("Numpy arrays are saved in " +  output_folder)
+		# print("Number of dimensions of saved arrays are :" + str(X_orig.ndim) + ", and " + str(X_glitched.ndim))
+		if X_orig.ndim ==  1 or X_glitched.ndim == 1:
+			print("Either the input is empty, or the input images and/or videos frames are not of the same dimension. Consider resizing the outputs.")
+		# print(X_glitched.ndim)
 
 		np.save(os.path.join(output_folder, 'X_orig.npy'), X_orig)
 		np.save(os.path.join(output_folder, 'X_glitched.npy'), X_glitched)
