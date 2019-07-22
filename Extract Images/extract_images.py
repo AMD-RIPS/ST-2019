@@ -57,6 +57,7 @@ if os.path.isdir(input_video_path):
 	is_input_folder = True
 
 if not is_input_folder:
+	num_produced = 0
 	cap = cv2.VideoCapture(input_video_path)
 	while(1):
 		ret,frame = cap.read()
