@@ -237,9 +237,21 @@ def add_shaders(im, lo = 1, hi = 3):
 		alpha = 1
 
 		colors = np.empty([2, 3])
-		colors[0,:] = npr.randint(0, 256, size = 3)
-		colors[1,:] = colors[0,:] + npr.randint(0, 100, size = 3)
-		colors[1,:] = np.clip(colors[1,:], 0, 255)
+		start_x = min(max(0, x_0), h-1)
+		start_y = min(max(0, y_0), w-1)
+
+		colors[0, :] = im[start_x, start_y,:]
+		mid_x = (x_1+x_2)//2
+		mid_y = (y_1+y_2)//2
+
+		mid_x = min(max(0, mid_x), h-1)
+		mid_y = min(max(0, mid_y), w-1)
+
+		colors[1, :] = im[mid_x,mid_y,:]
+
+		# colors[0,:] = npr.randint(0, 256, size = 3)
+		# colors[1,:] = colors[0,:] + npr.randint(0, 100, size = 3)
+		# colors[1,:] = np.clip(colors[1,:], 0, 255)
 
 		
 		cv2.fillConvexPoly(overlay1, pts, color= tuple([int(x) for x in colors[0]]) )
