@@ -52,10 +52,10 @@ def add_vertical_pattern(img):
 
 def blurring(img):
 	height, width, _ = img.shape
-	x0 = npr.randint(0, int(height / 3))
-	y0 = npr.randint(0, int(width / 3))
-	x1 = npr.randint(int(2 * height / 3), height)
-	y1 = npr.randint(int(2 * width / 3), width)
+	x0 = npr.randint(0, int(height / 2))
+	y0 = npr.randint(0, int(width / 2))
+	x1 = npr.randint(min(x0 + int(height / 4), height), min(x0 + int(height / 2), height))
+	y1 = npr.randint(min(x1 + int(height / 4), width), min(x1 + int(height / 2), width))
 
 	copy = np.copy(img[x0:x1,y0:y1,:])
 
