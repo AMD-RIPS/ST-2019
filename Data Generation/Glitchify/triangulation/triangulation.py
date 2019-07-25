@@ -544,7 +544,7 @@ def triangulation(img, is_random = False):
 	x0 = npr.randint(0, int(height / 2))
 	y0 = npr.randint(0, int(width / 2))
 	x1 = npr.randint(min(x0 + int(height / 4), height), min(x0 + int(height / 2), height))
-	y1 = npr.randint(min(y0 + int(height / 4), width), min(y0 + int(height / 2), width))
+	y1 = npr.randint(min(y0 + int(width / 4), width), min(y0 + int(width / 2), width))
 
 	cropped_img = orig.crop([y0, x0, y1, x1])
 	colorIm = cropped_img

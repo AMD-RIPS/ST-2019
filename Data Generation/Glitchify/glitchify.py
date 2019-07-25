@@ -55,7 +55,7 @@ def blurring(img):
 	x0 = npr.randint(0, int(height / 2))
 	y0 = npr.randint(0, int(width / 2))
 	x1 = npr.randint(min(x0 + int(height / 4), height), min(x0 + int(height / 2), height))
-	y1 = npr.randint(min(y0 + int(height / 4), width), min(y0 + int(height / 2), width))
+	y1 = npr.randint(min(y0 + int(width / 4), width), min(y0 + int(width / 2), width))
 
 	copy = np.copy(img[x0:x1,y0:y1,:])
 
