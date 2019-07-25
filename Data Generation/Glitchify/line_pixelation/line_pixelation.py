@@ -91,7 +91,7 @@ def line_pixelation(img):
 			else:
 				print("Error: 'height' is too large for input dimensions.")
 				continue
-		stripes=random.randrange(1,1+abs(int(np.random.normal(20,20))))
+		stripes=random.randrange(1,max(1+abs(int(np.random.normal(20,20))), 2))
 		ss=np.ones(stripes)
 		if(skipstripe==1):
 			ss=[1]
