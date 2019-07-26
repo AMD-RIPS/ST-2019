@@ -541,10 +541,10 @@ def triangulation(img, is_random = False):
 	(orig, blackIm) = loadAndFilterImage(img)
 	orig_np = np.array(orig)
 	height, width, _ = orig_np.shape
-	x0 = npr.randint(0, int(height / 3))
-	y0 = npr.randint(0, int(width / 3))
-	x1 = npr.randint(int(2 * height / 3), height)
-	y1 = npr.randint(int(2 * width / 3), width)
+	x0 = npr.randint(0, int(height / 2))
+	y0 = npr.randint(0, int(width / 2))
+	x1 = npr.randint(min(x0 + int(height / 4), height), min(x0 + int(height / 2), height))
+	y1 = npr.randint(min(y0 + int(width / 4), width), min(y0 + int(width / 2), width))
 
 	cropped_img = orig.crop([y0, x0, y1, x1])
 	colorIm = cropped_img
@@ -565,7 +565,7 @@ def triangulation(img, is_random = False):
 	img = np.array(img)
 	img = cv2.resize(img, (y1-y0, x1-x0), interpolation = cv2.INTER_LINEAR)
 
-	margin_size = int(width * width_ratio * 1.8)
+	margin_size = int(width * width_ratio * 2.2)
 	orig_np[x0+margin_size:x1-margin_size,y0+ margin_size :y1- margin_size , :] = img[margin_size:-margin_size, margin_size:-margin_size, :]
 	return orig_np[:,:,[2,1,0]]
 
