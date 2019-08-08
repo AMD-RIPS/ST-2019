@@ -50,9 +50,9 @@ def test(X_test):
   print('Transform Time for triangulation: ', t2-t1)
 
 	# Load PCA / CLF models
-  with open('triang-PCA-400.pkl', 'rb') as file:
+  with open('triangulation_test/triang-PCA-400.pkl', 'rb') as file:
     pca = pickle.load(file)
-  with open('triang-LDA-400.pkl', 'rb') as file:
+  with open('triangulation_test/triang-LDA-400.pkl', 'rb') as file:
     clf = pickle.load(file)
 
   # Apply PCA and make predictions

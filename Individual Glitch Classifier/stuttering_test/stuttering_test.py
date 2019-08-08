@@ -48,9 +48,9 @@ def test(X_test):
   print('Transform Time for stuttering: ', t2-t1)
 
   # Load PCA / CLF models
-  with open('stut-PCA-100.pkl', 'rb') as file:
+  with open('stuttering_test/stut-PCA-100.pkl', 'rb') as file:
     pca = pickle.load(file)
-  with open('stut-SVM-100.pkl', 'rb') as file:
+  with open('stuttering_test/stut-SVM-100.pkl', 'rb') as file:
     clf = pickle.load(file)
 
   # Apply PCA and make predictions

@@ -51,9 +51,9 @@ def test(X_test):
   print('Transform Time for square patch: ', t2-t1)
 
   # Load PCA / CLF models
-  with open('sqp-PCA-234.pkl', 'rb') as file:
+  with open('square_patch_test/sqp-PCA-234.pkl', 'rb') as file:
     pca = pickle.load(file)
-  with open('sqp-LR-234.pkl', 'rb') as file:
+  with open('square_patch_test/sqp-LR-234.pkl', 'rb') as file:
     clf = pickle.load(file)
 
   # Apply PCA and make predictions

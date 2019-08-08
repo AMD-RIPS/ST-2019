@@ -51,9 +51,9 @@ def test(X_test):
   print('Transform Time for shapes: ', t2-t1)
 
 	# Load PCA / CLF models
-  with open('shapes-PCA-300.pkl', 'rb') as file:
+  with open('shape_test/shapes-PCA-300.pkl', 'rb') as file:
     pca = pickle.load(file)
-  with open('shapes-LR-300.pkl', 'rb') as file:
+  with open('shape_test/shapes-LR-300.pkl', 'rb') as file:
     clf = pickle.load(file)
 
   # Apply PCA and make predictions
