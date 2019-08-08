@@ -70,14 +70,9 @@ def test(X):
 
     return y_pred
 
-
 # def load_test(test_normal_path, test_glitched_path):
 #     X_test_1 = np.load(test_normal_path)
-#     X_test_1 = transform(X_test_1)
-
-
 #     X_test_2 = np.load(test_glitched_path)
-#     X_test_2 = transform(X_test_2)
 
 
 #     y_1 = np.zeros(X_test_1.shape[0])
@@ -94,11 +89,17 @@ def test(X):
 #     return X_test, y_test
 
 
-# test_normal_path = "/home/IPAMNET/kjiang/Desktop/glitch_classifiers/normal_data/X_test_normal.npy"
-# test_glitched_path = "/home/IPAMNET/kjiang/Desktop/glitch_classifiers/discoloration/discoloration/np_data/X_test_discoloration.npy"
+# def main():
+#     test_normal_path = "/home/IPAMNET/kjiang/Desktop/glitch_classifiers/normal_data/X_test_normal.npy"
+#     test_glitched_path = "/home/IPAMNET/kjiang/Desktop/glitch_classifiers/discoloration/discoloration/np_data/X_test_discoloration.npy"
 
-# X_test, y_test = load_test(test_normal_path, test_glitched_path)
-# y_pred = test(X_test)
+#     X_test, Y_test = load_test(test_normal_path, test_glitched_path)
 
-# matrix = confusion_matrix(y_test, y_pred)
-# print(matrix)
+#     y_pred = test(X_test)
+#     matrix = confusion_matrix(Y_test, y_pred)
+#     print(matrix)
+
+
+# if __name__ == '__main__':
+#   main()
+
