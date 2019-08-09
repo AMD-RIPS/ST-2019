@@ -15,3 +15,12 @@ Download the 4 .pkl files for the 4 glitches, and put them into the 4 folders re
 3. stut-PCA-100.pkl -> Put into folder "stuttering_test"
 
 4. triang-PCA-400.pkl -> Put into folder "triangulation_test"
+
+
+======
+
+## More Note
+
+Downdload the file: https://drive.google.com/file/d/11rlDpGM6DqEKPfH9Ru0rKusfwflVwDYw/view?usp=sharing
+
+And move 'modelSVMmorse.pkl' -> To folder "morsecode"
