@@ -10,7 +10,7 @@ from tflearn.layers.estimator import regression
 from sklearn.metrics import confusion_matrix
 from skimage import feature
 
-MODEL_PATH = "cnn_pl"
+MODEL_PATH = "parallel_lines_test/cnn_pl"
 
 n_epoch = 120
 new_x = 300
@@ -69,6 +69,7 @@ def convert_label_to_one_hot(y):
 
 
 def test(X):
+    tf.reset_default_graph()
     model = build_model()
     model = tflearn.DNN(model)
 

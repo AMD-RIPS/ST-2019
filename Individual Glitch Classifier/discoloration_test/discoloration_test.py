@@ -8,7 +8,7 @@ from tflearn.layers.estimator import regression
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 # import cnn_discoloration
 
-MODEL_PATH = "cnn_discoloration"
+MODEL_PATH = "discoloration_test/cnn_discoloration"
 
 n_epoch = 180
 new_x = 300
