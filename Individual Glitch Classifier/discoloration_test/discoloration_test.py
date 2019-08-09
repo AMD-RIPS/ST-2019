@@ -58,6 +58,7 @@ def transform(X):
 
 
 def test(X):
+    
     model = build_model()
     model = tflearn.DNN(model)
 

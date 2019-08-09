@@ -13,12 +13,12 @@ model_directory = ""
 
 
 images = np.load(test_directory)
-print(images.shape[0], " images were loaded.")
+print(images.shape, " ... images are loaded.")
 pred = np.zeros(len(images))
 
-glitches = ["discoloration", "screen_tearing", "random_patch", "parallel_lines", 
+glitches = [ "discoloration","morsecode", "screen_tearing", "random_patch", "parallel_lines", 
             "shader", "square_patch", "texture_popin",
-            "morse_code", "radial_dotted_line",
+            "radial_dotted_line",
             "shape", "stuttering", "triangulation"]
 #"line_pixelation",  "dotted_line",
 

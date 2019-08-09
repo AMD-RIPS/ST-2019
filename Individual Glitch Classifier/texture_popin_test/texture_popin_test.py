@@ -12,7 +12,7 @@ def test(X):
 
 	print("transform time: " + str(ed - st))
 	
-	clf = load('texture_popin_lr.joblib') 
+	clf = load('texture_popin_test/texture_popin_lr.joblib') 
 
 	Y_pred = clf.predict(X)
 	return Y_pred

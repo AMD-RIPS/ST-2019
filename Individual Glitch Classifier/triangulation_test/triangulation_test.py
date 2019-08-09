@@ -47,7 +47,7 @@ def test(X_test):
   t1 = time.time()
   X_test_FFT = get_flat_FFT(X_test)
   t2 = time.time()
-  print('Transform Time for triangulation: ', t2-t1)
+#  print('Transform Time for triangulation: ', t2-t1)
 
 	# Load PCA / CLF models
   with open('triangulation_test/triang-PCA-400.pkl', 'rb') as file:
@@ -60,7 +60,7 @@ def test(X_test):
   X_pca = pca.transform(X_test_FFT)
   y_pred = clf.predict(X_pca)
   t2 = time.time()
-  print('Remaining Time for triangulation: ', t2-t1)
+  #print('Remaining Time for triangulation: ', t2-t1)
 
   return y_pred  	
 

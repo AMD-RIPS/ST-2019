@@ -5,7 +5,7 @@ import sys
 import os
 import pickle
 
-
+MODEL_NAME = "dotted_line_test/modelSVMdottedline.pkl"
 def test(images):
     model_f=MODEL_NAME  #change this for the actual path + name
     return pred(images,model_f)
@@ -17,8 +17,8 @@ def fouriertransform(img):
     magnitude_spectrum=20*np.log(np.abs(fshift))
     return magnitude_spectrum
 
-def pred(array_f,model_f):
-    buff=np.load(array_f)
+def pred(buff,model_f):
+    
     test=np.zeros((len(buff),1920*1080//16),dtype=np.uint8)
 
     for i in list(range(len(buff))):
