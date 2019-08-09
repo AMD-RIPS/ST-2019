@@ -27,7 +27,7 @@ def pred(array,scale,model):
         test[i]=img_fft.flatten()
 
     model=pickle.load(open(model,'rb'))
-    predictions=model.predict(test_data)
+    predictions=model.predict(test)
     return predictions
 
 pred(array,scaler,model)
