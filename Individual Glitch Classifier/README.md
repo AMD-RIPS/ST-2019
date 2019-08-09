@@ -1,6 +1,6 @@
 ## Important Note (Please READ):
 
-The four PCA pkl files are missing from four folders because they are tooooo big. 
+Some model files (e.g. PCA) are missing from the folders because the file size is too big.
 
 Go to:
 
@@ -15,3 +15,8 @@ Download the 4 .pkl files for the 4 glitches, and put them into the 4 folders re
 3. stut-PCA-100.pkl -> Put into folder "stuttering_test"
 
 4. triang-PCA-400.pkl -> Put into folder "triangulation_test"
+
+To download the SVM models (line_pixelaton, morse_code and dottted_lines) use:
+ - https://drive.google.com/file/d/1aMzT3GgL5f9mUMDxoYsYjZvKfH8zIxf5/view?usp=sharing (line_pixelation)
+ - https://drive.google.com/file/d/11rlDpGM6DqEKPfH9Ru0rKusfwflVwDYw/view?usp=sharing (morse_code)
+ - https://drive.google.com/file/d/1kBUTqQBcy3OxRkY2EExFl2bgNqEylLD2/view?usp=sharing (dotted_lines)
