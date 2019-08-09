@@ -1,6 +1,6 @@
 ## Important Note (Please READ):
 
-The PCA model files are missing from four folders because they are tooooo big. 
+Some model files (e.g. PCA) are missing from the folders because the file size is too big.
 
 Go to:
 
