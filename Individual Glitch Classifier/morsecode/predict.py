@@ -5,8 +5,10 @@ import sys
 import os
 import pickle
 
-array_f=sys.argv[1]
-model_f=sys.argv[2]
+
+def test(images):
+    model_f=MODEL_NAME  #change this for the actual path + name
+    return pred(images,model_f)
 
 def fouriertransform(img):
     buff=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -22,11 +24,9 @@ def pred(array_f,model_f):
     for i in list(range(len(buff))):
         img=buff[i]
         img_fft=fouriertransform(img)
-        img_fft=cv2.resize(img_fft,(img_fft.shape[1]//4,img_fft.shape[0]//4))
+        img_fft=cv2.resize(img_fft,(480,270))
         test[i]=img_fft.flatten()
 
     model=pickle.load(open(model_f,'rb'))
     predictions=model.predict(test)
     return predictions
-
-pred(array_f,model_f)
