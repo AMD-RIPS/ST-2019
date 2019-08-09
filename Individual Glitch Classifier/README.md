@@ -1,6 +1,6 @@
 ## Important Note (Please READ):
 
-The four PCA pkl files are missing from four folders because they are tooooo big. 
+The PCA model files are missing from four folders because they are tooooo big. 
 
 Go to:
 
