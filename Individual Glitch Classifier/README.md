@@ -6,7 +6,10 @@ Go to:
 
 https://drive.google.com/open?id=1j9NC1SFPMl6BIZFIeQQjyLmk3VEaqGhf
 
-Download the 4 .pkl files for the 4 glitches, and put them into the 4 folders respectively.
+
+Download the .pkl files for the five glitches, and put them into the correct folders respectively.
+
+### PCA models
 
 1. shapes-PCA-300.pkl -> Put into folder "shape_test"
 
@@ -15,6 +18,8 @@ Download the 4 .pkl files for the 4 glitches, and put them into the 4 folders re
 3. stut-PCA-100.pkl -> Put into folder "stuttering_test"
 
 4. triang-PCA-400.pkl -> Put into folder "triangulation_test"
+
+5. discolor-PCA-500.pkl -> Put into folder "discoloration_test"
 
 To download the SVM models (line_pixelaton, morse_code and dottted_lines) use:
  - https://drive.google.com/file/d/1aMzT3GgL5f9mUMDxoYsYjZvKfH8zIxf5/view?usp=sharing (line_pixelation)
