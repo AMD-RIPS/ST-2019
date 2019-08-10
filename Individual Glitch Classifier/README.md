@@ -2,12 +2,11 @@
 
 Some model files (e.g. PCA) are missing from the folders because the file size is too big.
 
-Go to:
+For the model to run without error, please go to:
 
 https://drive.google.com/open?id=1j9NC1SFPMl6BIZFIeQQjyLmk3VEaqGhf
 
-
-Download the .pkl files for the five glitches, and put them into the correct folders respectively.
+Download all the .pkl files, and put them into the correct folders respectively.
 
 ### PCA models
 
