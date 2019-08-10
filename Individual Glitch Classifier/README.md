@@ -21,6 +21,8 @@ Download the .pkl files for the five glitches, and put them into the correct fol
 
 5. discolor-PCA-500.pkl -> Put into folder "discoloration_test"
 
+### SVM models
+
 To download the SVM models (line_pixelaton, morse_code and dottted_lines) use:
  - https://drive.google.com/file/d/1aMzT3GgL5f9mUMDxoYsYjZvKfH8zIxf5/view?usp=sharing (line_pixelation)
  - https://drive.google.com/file/d/11rlDpGM6DqEKPfH9Ru0rKusfwflVwDYw/view?usp=sharing (morse_code)
