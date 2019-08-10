@@ -23,7 +23,8 @@ Download the .pkl files for the five glitches, and put them into the correct fol
 
 ### SVM models
 
-To download the SVM models (line_pixelaton, morse_code and dottted_lines) use:
- - https://drive.google.com/file/d/1aMzT3GgL5f9mUMDxoYsYjZvKfH8zIxf5/view?usp=sharing (line_pixelation)
- - https://drive.google.com/file/d/11rlDpGM6DqEKPfH9Ru0rKusfwflVwDYw/view?usp=sharing (morse_code)
- - https://drive.google.com/file/d/1kBUTqQBcy3OxRkY2EExFl2bgNqEylLD2/view?usp=sharing (dotted_lines)
+6. modelSVMmorse.pkl -> Put into folder "morse_code_test"
+
+7. modelSVMlinepixelation.pkl -> Put into folder "line_pixelation_test"
+
+8. modelSVMdottedline.pkl -> Put into folder "dotted_line_test"
