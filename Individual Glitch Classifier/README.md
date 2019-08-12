@@ -20,10 +20,12 @@ Download all the .pkl files, and put them into the correct folders respectively.
 
 5. discolor-PCA-500.pkl -> Put into folder "discoloration_test"
 
+6. paraline-PCA-300.pkl -> Put into folder "parallel_lines_test"
+
 ### SVM models
 
-6. modelSVMmorse.pkl -> Put into folder "morse_code_test"
+1. modelSVMmorse.pkl -> Put into folder "morse_code_test"
 
-7. modelSVMlinepixelation.pkl -> Put into folder "line_pixelation_test"
+2. modelSVMlinepixelation.pkl -> Put into folder "line_pixelation_test"
 
-8. modelSVMdottedline.pkl -> Put into folder "dotted_line_test"
+3. modelSVMdottedline.pkl -> Put into folder "dotted_line_test"
