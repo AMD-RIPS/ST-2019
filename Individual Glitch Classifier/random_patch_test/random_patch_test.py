@@ -1,118 +1,236 @@
-import cv2
-import numpy as np
-from random import shuffle
-import tensorflow as tf
+import cv2, os
 import matplotlib.pyplot as plt
-import tflearn
-from tflearn.layers.conv import conv_2d, max_pool_2d
-from tflearn.layers.core import input_data, dropout, fully_connected
-from tflearn.layers.estimator import regression
+import numpy as np
+from numpy import linalg as LA
+import sys
+import timeit
+from scipy import stats
 from sklearn.metrics import confusion_matrix
-from skimage import feature
-
-MODEL_PATH = "random_patch_test/cnn_r_p"
-
-n_epoch = 120
-new_x = 300
-new_y = 300
-BATCH_SIZE = 32
-nb_classes = 2
 
 
-IMAGE_INPUT_SIZE = (new_x, new_y)
-transpose_size = (new_y, new_x)
+# Compute the abnormality score for each pixel in the input img
+def compute_salience_matrix(img):
+	width, height, channel = img.shape
+	num_pixels = height * width
+	feature_size = 3
+
+	mu = np.average(np.average(img, axis = 0), axis = 0)
+	alpha = float(np.average(mu))
+
+	W = np.zeros([feature_size, feature_size])
+	for i in range(feature_size):
+		for j in range(feature_size):
+			if i == j:
+				continue
+			else:
+				W[i, j] = 1.0 / (1 + np.power((mu[i] - mu[j]) / alpha, 2))
+
+	degree_arr = np.sum(W, axis = 0)
+	D = np.diag(degree_arr)
+	D_sqrt_inv = np.diag(1.0 / np.sqrt(degree_arr))
+	L = D - W
+	L_sym = LA.multi_dot([D_sqrt_inv, L, D_sqrt_inv])
+
+	salience_matrix = np.empty([width, height])
+	for i in range(width):
+		for j in range(height):
+			mean_centered_pixel = img[i,j,:] - mu
+			salience_matrix[i, j] = LA.multi_dot([mean_centered_pixel, L, mean_centered_pixel])
+
+	return salience_matrix
+
+
+def is_glitched(img):
+    h,w,_ = img.shape
+
+    # M = 50
+    # N = 50
+
+    M = int(h / 21)
+    N = int(w / 38)
+
+
+    result = np.zeros_like(img)
+    count = 0
+
+    for i in range(0,h-M,M):
+        for j in range(0, w-N, N):
+            tile = np.mean(img[i:i+M, j:j+N, :], axis = 2)
+
+
+            if np.all(tile == tile[0,0]) and tile[0,0] > 40:
+                result[i:i+M, j:j+N,:]=255
+                count += 1
+
+    if count > 20:
+    	return 1
+    else:
+    	return 0
+
+# def is_glitched(img):
+#     h,w,_ = img.shape
+
+#     M = 30
+#     N = 30
+
+
+#     result = np.zeros_like(img)
+#     count = 0
+
+#     for i in range(0,h-M,M):
+#         for j in range(0, w-N, N):
+#             tile = np.mean(img[i:i+M, j:j+N, :], axis = 2)
+
+
+#             if np.all(tile == tile[0,0]) and tile[0,0] > 40:
+#                 result[i:i+M, j:j+N,:]=255
+#                 count += 1
+
+#     if count > 50:
+#     	return 1, result, tile[0,0]
+#     else:
+#     	return 0, result, tile[0,0]
 
 
 
-def transform(X):
-	n,h,w,_ = X.shape
-	new_X = np.empty([n,new_x,new_y, 3])
-	radius = 1
-	n_points = 1
+def classify(img):
+	img = cv2.resize(img, (480, 270))
+	# test_img = np.zeros_like(img)
+	h,w,_ = img.shape
+	area = h * w
+
+
+
+	salience_matrix = compute_salience_matrix(img)
+	salience_list = np.reshape(salience_matrix, [area])
+	var = np.var(salience_list)
+	std = np.sqrt(var)
+	salience_threshold = np.mean(salience_list) + 2 * std
+
+	for i in range(h):
+		for j in range(w):
+			if salience_matrix[i,j] <= salience_threshold:
+				img[i,j,:] = 0
+			# else:
+			# 	test_img[i,j,:] = 255
+
+
+	# plt.imshow(img)
+	# plt.show()
+
+	# plt.imshow(test_img)
+	# plt.show()
+
+	
+	flat = img.flatten()
+	non_zero_flat = flat[np.nonzero(flat)]
+	total = non_zero_flat.shape[0]
+	p = stats.mode(non_zero_flat)
+
+
+	if p[1] > float(total) / 12:
+		return 1
+	return 0
+
+
+def test(X):
+	n = X.shape[0]
+	y = np.empty(n)
 
 	for i in range(n):
-		img = cv2.resize(X[i,:,:,:],(new_y, new_x))
+		y[i] = classify(X[i,:,:,:]) | is_glitched(X[i,:,:,:])
 
-		new_X[i,:,:,:] = img
-
-	return new_X
-
-
-def build_model():
-	convnet = input_data(shape=[None, new_x, new_y, 3], name='input')
-	convnet = conv_2d(convnet, 32, 5, activation='relu')
-	convnet = max_pool_2d(convnet, 5)
-	convnet = conv_2d(convnet, 64, 5, activation='relu')
-	convnet = max_pool_2d(convnet, 5)
-	convnet = conv_2d(convnet, 128, 5, activation='relu')
-	convnet = max_pool_2d(convnet, 5)
-	convnet = conv_2d(convnet, 64, 5, activation='relu')
-	convnet = max_pool_2d(convnet, 5)
-	convnet = conv_2d(convnet, 32, 5, activation='relu')
-	convnet = max_pool_2d(convnet, 5)
-	convnet = fully_connected(convnet, 1024, activation='relu')
-	convnet = dropout(convnet, 0.8)
-	convnet = fully_connected(convnet, 256, activation='relu')
-	convnet = fully_connected(convnet, nb_classes, activation='softmax')
-	convnet = regression(convnet, optimizer='sgd', learning_rate=0.01, 
-		loss='binary_crossentropy', name='targets')
-
-	return convnet
-
-
-
-def convert_label_to_one_hot(y):
-	targets = y.astype(int).reshape(-1)
-	y = np.eye(nb_classes)[targets]
 	return y
 
 
 
-def test(X):
-    tf.reset_default_graph()
-    model = build_model()
-    model = tflearn.DNN(model)
+# wd = "np_data"
 
-    model.load( MODEL_PATH + '.model')
+# glitch_type = "random_patch"
 
-    X_test = transform(X)
+# X_train_1 = np.load("/home/IPAMNET/kjiang/Desktop/glitch_classifiers/normal_data/X_test_normal.npy")
+# X_train_3 = np.load(os.path.join(wd, "X_test_" + glitch_type + ".npy"))
 
-    y_pred = model.predict(X_test)
-    y_pred = np.argmax(y_pred, axis = 1)
+# X_train_1 = X_train_1[:40,:,:,:]
+# X_train_3 = X_train_3[:40,:,:,:]
 
-    return y_pred
-
-
-# def load_test(test_normal_path, test_glitched_path):
-#     X_test_1 = np.load(test_normal_path)
-#     X_test_2 = np.load(test_glitched_path)
+# y_1 = np.zeros(X_train_1.shape[0])
+# y_3 = np.ones(X_train_3.shape[0])
 
 
-#     y_1 = np.zeros(X_test_1.shape[0])
-#     y_2 = np.ones(X_test_2.shape[0])
-
-#     X_test = np.concatenate((X_test_1, X_test_2))
-#     y_test = np.concatenate((y_1, y_2))
+# X_train = np.concatenate((X_train_1, X_train_3 ))
+# y_train = np.concatenate((y_1, y_3))
 
 
-#     idx = np.random.permutation(X_test.shape[0])
-#     X_test, y_test = X_test[idx], y_test[idx]
+# y_pred = np.empty(X_train.shape[0])
 
 
-#     return X_test, y_test
+# idx = np.random.permutation(X_train.shape[0])
+# X_train, y_train = X_train[idx], y_train[idx]
+
+# y_pred = test(X_train)
 
 
-# def main():
-# 	test_normal_path = "/home/IPAMNET/kjiang/Desktop/glitch_classifiers/normal_data/X_test_normal.npy"
-# 	test_glitched_path = "/home/IPAMNET/kjiang/Desktop/glitch_classifiers/random_patch/np_data/X_test_random_patch.npy"
 
-# 	X_test, Y_test = load_test(test_normal_path, test_glitched_path)
+# matrix = confusion_matrix(y_train, y_pred)
 
-# 	y_pred = test(X_test)
-# 	matrix = confusion_matrix(Y_test, y_pred)
-# 	print(matrix)
+# print(matrix)
 
 
-# if __name__ == '__main__':
-# 	main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# h, w = 270, 480
+# area = h * w
+
+
+
+# correct = 0.0
+# total = 0.0
+
+# for i in range(X_train.shape[0]):
+# 	img = X_train[i,:,:,:]
+# 	p, t, l = classify(img)
+# 	q, r, color = is_glitched(img)
+
+# 	y_pred[i] = ((p + q) > 0) * 1
+# 	# print(y_train[i], p, q)
+
+
+# 	# if y_train[i] != y_pred[i]:
+# 	# 	print(color, l)
+# 	# 	plt.imshow(img)
+# 	# 	plt.show()
+
+# 	# 	plt.imshow(r)
+# 	# 	plt.show()
+
+# 	# 	plt.imshow(t)
+# 	# 	plt.show()
+# 	total += 1
+# 	if y_train[i] == y_pred[i]:
+# 		correct += 1
+
+# 	if i % 20 == 0:
+# 		print("accuracy", total, correct / total)
+
+
+
+# matrix = confusion_matrix(y_train, y_pred)
+
+# print(matrix)
+
 
