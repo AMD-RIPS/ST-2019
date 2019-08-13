@@ -51,9 +51,9 @@ def test(X_test):
   print('Transform Time for dots: ', t2-t1)
 
 	# Load PCA / CLF models
-  with open('dots_test/dots-PCA-300.pkl', 'rb') as file:
+  with open('dotted_line_test/dots-PCA-300.pkl', 'rb') as file:
     pca = pickle.load(file)
-  with open('dots_test/dots-LR-300.pkl', 'rb') as file:
+  with open('dotted_line_test/dots-LR-300.pkl', 'rb') as file:
     clf = pickle.load(file)
 
   # Apply PCA and make predictions
