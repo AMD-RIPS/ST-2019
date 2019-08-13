@@ -4,18 +4,19 @@ import sklearn
 import sys
 import os
 import pickle
+from PIL import Image
 
 
 def test(images):
-    model_f=MODEL_NAME  #change this for the actual path + name
+    model_f=MODELNAME #change!
     pred(images,model_f)
 
 def fouriertransform(img):
-    f=np.fft.fft2(buff)
+    f=np.fft.fft2(img)
     fshift=np.fft.fftshift(f)
     magnitude_spectrum=20*np.log(np.abs(fshift))
     return magnitude_spectrum
-def fourierwindow(image):
+def fourierwindow(img):
     f=np.fft.fft2(img)
     fshift=np.fft.fftshift(f)
     newarray=np.zeros((1080,1920),dtype=complex)
@@ -36,8 +37,8 @@ def pred(array_f,model_f):
     for i in list(range(len(buff))):
         img=buff[i]
         img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-        img_fft=fourierwindow(img)
-        img_fft=cv2.resize(img_fft,(270,4800))
+        img_fft=fouriertransform(img)
+        img_fft=cv2.resize(img_fft,(270,480))
         img=cv2.resize(img,(270,480))
         test[i]=np.append(img_fft.flatten(),img.flatten())
 
