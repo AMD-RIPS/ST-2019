@@ -11,13 +11,11 @@ def test(images):
     pred(images,model_f)
 
 def fouriertransform(img):
-    buff=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     f=np.fft.fft2(buff)
     fshift=np.fft.fftshift(f)
     magnitude_spectrum=20*np.log(np.abs(fshift))
     return magnitude_spectrum
 def fourierwindow(image):
-    img=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     f=np.fft.fft2(img)
     fshift=np.fft.fftshift(f)
     newarray=np.zeros((1080,1920),dtype=complex)
@@ -37,11 +35,12 @@ def pred(array_f,model_f):
 
     for i in list(range(len(buff))):
         img=buff[i]
+        img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
         img_fft=fourierwindow(img)
-        img_fft=cv2.resize(img_fft,(480,270))
-        img=cv2.resize(img,(480,270))
+        img_fft=cv2.resize(img_fft,(270,4800))
+        img=cv2.resize(img,(270,480))
         test[i]=np.append(img_fft.flatten(),img.flatten())
 
     model=pickle.load(open(model_f,'rb'))
     predictions=model.predict(test)
-    print(predictions)
+    return predictions
