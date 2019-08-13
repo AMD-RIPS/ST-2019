@@ -35,24 +35,11 @@ def compute_salience_matrix(img):
 
 	salience_matrix = np.empty([width, height])
 
-	# st = time.time()
-
-	# print(mu[None, None, :])
-
 
 
 
 	img = img.astype(float)
 
-
-	# for i in range(width):
-	# 	for j in range(height):
-	# 		mean_centered_pixel = img[i,j,:] - mu
-
-	# 		if i == 10 and j == 10:
-	# 			print(mean_centered_pixel)
-	# 		salience_matrix[i, j] = LA.multi_dot([mean_centered_pixel, L, mean_centered_pixel])
-	# print(salience_matrix[:5,:5])
 
 
 	img[:,:,0] = img[:,:,0] - mu[0]
@@ -121,6 +108,9 @@ def classify(img):
 	total = non_zero_flat.shape[0]
 	p = stats.mode(non_zero_flat)
 
+	if total == 0:
+		return 0
+
 
 	if p[1] > float(total) / 12:
 		return 1
@@ -142,14 +132,9 @@ def test(X):
 		else:
 			y[i] = 0
 
-		# ed = time.time()
-		# print(ed - st)
-
-
-
-		# y[i] = a | b
-
 	return y
+
+
 
 
 
