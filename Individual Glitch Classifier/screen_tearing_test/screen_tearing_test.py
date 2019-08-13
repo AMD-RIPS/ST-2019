@@ -17,7 +17,7 @@ resize = lambda img: cv2.resize(img, dim, interpolation = cv2.INTER_NEAREST)
 
 
 def HOG(img, norm = 'L2', ppc = 10, cpb = 3):
-    pff = hog(img, orientations= 10, pixels_per_cell=(ppc, ppc),
+    pff = hog(img, orientations= 12, pixels_per_cell=(ppc, ppc),
               cells_per_block=(cpb, cpb), multichannel=True, transform_sqrt=True, block_norm= norm)
     return pff
 
@@ -25,7 +25,7 @@ def HOG(img, norm = 'L2', ppc = 10, cpb = 3):
 
 def test(images):
     glitch = "screen_tearing_test/screen_tearing"
-    pkl_filename = glitch + "_model.pkl"
+    pkl_filename = glitch + "_LR_85.pkl"
     images = np.array([resize(img) for img in images])
     images = np.array([HOG(img) for img in images])
 
