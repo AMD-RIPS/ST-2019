@@ -22,7 +22,7 @@ Download all the .pkl files, and put them into the correct folders respectively.
 
 6. paraline-PCA-300.pkl -> Put into folder "parallel_lines_test"
 
-7. dots-PCA-300.pkl -> Put into folder "dots_test"
+7. dots-PCA-300.pkl -> Put into folder "dotted_line_test"
 
 ### SVM models
 
@@ -30,4 +30,3 @@ Download all the .pkl files, and put them into the correct folders respectively.
 
 2. modelSVMlinepixelation.pkl -> Put into folder "line_pixelation_test"
 
-3. modelSVMdottedline.pkl -> Put into folder "dotted_line_test"
