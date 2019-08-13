@@ -72,7 +72,7 @@ def is_glitched(img):
 
 			if np.all(tile == tile[0,0]) and tile[0,0] > 40:
 				count += 1
-				if count > 10:
+				if count > 20:
 					return 1
 
 
