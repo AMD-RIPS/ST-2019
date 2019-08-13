@@ -22,6 +22,8 @@ Download all the .pkl files, and put them into the correct folders respectively.
 
 6. paraline-PCA-300.pkl -> Put into folder "parallel_lines_test"
 
+7. dots-PCA-300.pkl -> Put into folder "dots_test"
+
 ### SVM models
 
 1. modelSVMmorse.pkl -> Put into folder "morse_code_test"
