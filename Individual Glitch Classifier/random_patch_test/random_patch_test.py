@@ -61,6 +61,9 @@ def is_glitched(img):
 	M = int(h / 21)
 	N = int(w / 38)
 
+	# M = 50
+	# N = 50
+
 	count = 0
 
 	for i in range(0,h-M,M):
@@ -69,7 +72,7 @@ def is_glitched(img):
 
 			if np.all(tile == tile[0,0]) and tile[0,0] > 40:
 				count += 1
-				if count > 20:
+				if count > 10:
 					return 1
 
 
@@ -89,9 +92,7 @@ def classify(img):
 	salience_list = np.reshape(salience_matrix, [area])
 	var = np.var(salience_list)
 	std = np.sqrt(var)
-	salience_threshold = np.mean(salience_list) + 2 * std
-
-	# print(salience_threshold)
+	salience_threshold = max(np.mean(salience_list) + 2 * std, 6000)
 
 
 	img[np.where(salience_matrix <= salience_threshold)] = 0
