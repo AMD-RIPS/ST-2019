@@ -45,20 +45,21 @@ def test(X_test):
   t1 = time.time()
   X_test_FFT = get_flat_FFT(X_test)
   t2 = time.time()
- # print('Transform Time for stuttering: ', t2-t1)
+  print('Transform Time for stuttering: ', t2-t1)
 
   # Load PCA / CLF models
-  with open('stuttering_test/stut-PCA-100.pkl', 'rb') as file:
+  with open('stuttering_test/stut-PCA-300.pkl', 'rb') as file:
     pca = pickle.load(file)
-  with open('stuttering_test/stut-SVM-100.pkl', 'rb') as file:
+  with open('stuttering_test/stut-LR-300.pkl', 'rb') as file:
     clf = pickle.load(file)
 
   # Apply PCA and make predictions
   t1 = time.time()
   X_pca = pca.transform(X_test_FFT)
+  #y_pred = clf.predict_proba(X_pca)[:,1]
   y_pred = clf.predict(X_pca)
   t2 = time.time()
- # print('Remaining Time for stuttering: ', t2-t1)
+  print('Remaining Time for stuttering: ', t2-t1)
 
   return y_pred   
 
