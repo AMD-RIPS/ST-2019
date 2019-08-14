@@ -26,5 +26,3 @@ triang-PCA-400.pkl -> Put into folder "triangulation_test"
 
 modelSVMmorse.pkl -> Put into folder "morse_code_test"
 
-modelSVMlinepixel.pkl -> Put into folder "line_pixelation_test"
-
