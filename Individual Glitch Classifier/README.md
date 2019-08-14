@@ -10,19 +10,17 @@ Download all the .pkl files, and put them into the correct folders respectively.
 
 ### PCA models
 
-1. 
 
-2. sqp-PCA-234.pkl -> Put into folder "square_patch_test"
+1. sqp-PCA-234.pkl -> Put into folder "square_patch_test"
 
-3. stut-PCA-100.pkl -> Put into folder "stuttering_test"
+2. stut-PCA-100.pkl -> Put into folder "stuttering_test"
 
-4. triang-PCA-400.pkl -> Put into folder "triangulation_test"
+3. triang-PCA-400.pkl -> Put into folder "triangulation_test"
 
-5. discolor-PCA-500.pkl -> Put into folder "discoloration_test"
+4. discolor-PCA-500.pkl -> Put into folder "discoloration_test"
 
-6. paraline-PCA-300.pkl -> Put into folder "parallel_lines_test"
+5. paraline-PCA-300.pkl -> Put into folder "parallel_lines_test"
 
-7. dots-PCA-300.pkl -> Put into folder "dotted_line_test"
 
 ### SVM models
 
