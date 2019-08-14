@@ -10,7 +10,7 @@ Download all the .pkl files, and put them into the correct folders respectively.
 
 ### PCA models
 
-1. shapes-PCA-300.pkl -> Put into folder "shape_test"
+1. 
 
 2. sqp-PCA-234.pkl -> Put into folder "square_patch_test"
 
