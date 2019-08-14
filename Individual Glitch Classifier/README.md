@@ -18,8 +18,6 @@ stut-PCA-100.pkl -> Put into folder "stuttering_test"
 
 triang-PCA-400.pkl -> Put into folder "triangulation_test"
 
-discolor-PCA-500.pkl -> Put into folder "discoloration_test"
-
 paraline-PCA-300.pkl -> Put into folder "parallel_lines_test"
 
 
