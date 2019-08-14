@@ -26,5 +26,5 @@ Download all the .pkl files, and put them into the correct folders respectively.
 
 1. modelSVMmorse.pkl -> Put into folder "morse_code_test"
 
-2. modelSVMlinepixelation.pkl -> Put into folder "line_pixelation_test"
+2. modelSVMlinepixel.pkl -> Put into folder "line_pixelation_test"
 
