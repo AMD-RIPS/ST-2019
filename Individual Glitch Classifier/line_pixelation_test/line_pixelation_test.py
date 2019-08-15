@@ -11,10 +11,7 @@ import time
 from functools import partial
 
 
-# h, w = 1080, 1920
-# area = h * w
 
-# h1, w1 = 1080.0, 1920.0
 
 
 def compute_salience_matrix(img):
@@ -65,6 +62,21 @@ def add_neighbors(a, salience_threshold, interval):
 
 
 
+def dilatation(src, dilatation_size):
+	#max_elem = 2
+	#max_kernel_size = 21
+	#dilatation_size = 10
+	#dilatation_type = 0
+
+	# dilatation_type = cv2.MORPH_RECT
+
+	element = cv2.getStructuringElement(cv2.MORPH_RECT, (2*dilatation_size + 1, 2*dilatation_size+1), (dilatation_size, dilatation_size))
+
+	dilatation_dst = cv2.dilate(src, element)
+	return dilatation_dst
+
+
+
 def classify(img):
 	h,w,_ = img.shape
 	h1 = float(h)
@@ -79,61 +91,19 @@ def classify(img):
 	std = np.sqrt(var)
 	salience_threshold = max(np.mean(salience_list) + 2 * std, 6000)
 
-	interval = h // 108
 
-	# ed = time.time()
+	interval = h // 100
 
-	# st = time.time()
-	# aa = np.amax(np.apply_along_axis(add_neighbors, 0, salience_matrix, salience_threshold = salience_threshold, interval = interval))
-	# bb = np.amax(np.apply_along_axis(add_neighbors, 1, salience_matrix, salience_threshold = salience_threshold, interval = interval))
-	salience_matrix = salience_matrix.tolist()
+	p[salience_matrix > salience_threshold] = 1
 
-	for i in range(h):
-		for j in range(w):
-			if salience_matrix[i][j] > salience_threshold:
-				p[i - interval :i+ interval,j] = 1
-				p[i,j-interval:j+interval] = 1
 
-	salience_matrix = np.array(salience_matrix)
-
-	# ed = time.time()
-
-	# p[salience_matrix > salience_threshold] = 1
-	# print(ed - st)
-
+	p = dilatation(p, interval)
 
 	a = np.amax(np.count_nonzero(p, axis = 0) / h1)
 	b = np.amax(np.count_nonzero(p, axis = 1) / w1)
 
-	# print(a,b,aa, bb)
-
-	# print(ed - st)
-
 	return max(a,b)
 
-
-	# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	# f = np.fft.fft2(gray)
-	# fshift = np.fft.fftshift(f)
-	# magnitude_spectrum = 20*np.log(np.abs(fshift))
-
-
-	# plt.imshow(magnitude_spectrum)
-	# plt.show()
-
-	
-	# flat = img.flatten()
-	# non_zero_flat = flat[np.nonzero(flat)]
-	# total = non_zero_flat.shape[0]
-	# p = stats.mode(non_zero_flat)
-
-	# if total == 0:
-	# 	return 0
-
-
-	# if p[1] > float(total) / 12:
-	# 	return 1
-	# return 0
 
 
 def test(X):
@@ -142,7 +112,7 @@ def test(X):
 
 	for i in range(n):
 		# print(classify(X[i,:,:,:]))
-		rt.append(classify(X[i,:,:,:]) > 0.65)
+		rt.append((classify(X[i,:,:,:]) > 0.72)*1)
 
 	return np.asarray(rt)
 
@@ -151,53 +121,36 @@ def test(X):
 
 
 
+# # img = cv2.imread("pixelation2.bmp")
+# # print(test(np.array([img])))
+
+
+
+# def main():
+# 	glitch_type = "line_pixelation"
+# 	wd = "np_data"
+
+# 	X_test_1 = np.load("/home/IPAMNET/kjiang/Desktop/glitch_classifiers/normal_data/X_test_normal.npy")
+# 	X_test_2 = np.load(os.path.join(wd, "X_test_" + glitch_type + ".npy"))
+
+# 	# test(X_test_2)
+
+# 	y_1 = np.zeros(X_test_1.shape[0])
+# 	y_2 = np.ones(X_test_2.shape[0])
+
+# 	X_test = np.concatenate((X_test_1, X_test_2))
+# 	y_test = np.concatenate((y_1, y_2))
+
+# 	st = time.time()
+# 	y_pred = test(X_test)
+# 	ed = time.time()
+# 	print(ed - st)
+
+# 	print(confusion_matrix(y_test, y_pred))
 
 
 
 
-def main():
-	glitch_type = "line_pixelation"
-	wd = "np_data"
 
-	X_test_1 = np.load("/home/IPAMNET/kjiang/Desktop/glitch_classifiers/normal_data/X_test_normal.npy")
-	X_test_2 = np.load(os.path.join(wd, "X_test_" + glitch_type + ".npy"))
-
-
-
-	y_1 = np.zeros(X_test_1.shape[0])
-	y_2 = np.ones(X_test_2.shape[0])
-
-	X_test = np.concatenate((X_test_1, X_test_2))
-	y_test = np.concatenate((y_1, y_2))
-
-	st = time.time()
-	y_pred = test(X_test)
-	ed = time.time()
-	print(ed - st)
-
-	print(confusion_matrix(y_test, y_pred))
-
-
-
-
-	# # clf = SVC(gamma='auto')
-	# clf.fit(X_train, Y_train) 
-	# # SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-	# # 	decision_function_shape='ovr', degree=1, gamma='auto', kernel='rbf',
-	# # 	max_iter=-1, probability=False, random_state=None, shrinking=True,
-	# # 	tol=0.001, verbose=False)
-
-
-	# # from joblib import dump, load
-	# # dump(clf, 'blur_lr.joblib') 
-
-	# st = time.time()
-	# Y_pred = clf.predict(X_test)
-	# ed = time.time()
-	# print(ed-st, "time")
-
-
-
-
-if __name__ == '__main__':
-	main()
+# if __name__ == '__main__':
+# 	main()
