@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import sys, random, time
 from random import shuffle
 from sklearn.metrics import confusion_matrix
-from scipy import ndimage
+# from scipy import ndimage
 from sklearn.linear_model import LogisticRegression
 from numpy import linalg as LA
 import time
