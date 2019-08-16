@@ -153,4 +153,8 @@ def test(X):
 
 
 # if __name__ == '__main__':
+<<<<<<< HEAD
 # 	main()
+=======
+# 	main()
+>>>>>>> ca1cf5104208603b2f19c03d7e42207a05e98af1

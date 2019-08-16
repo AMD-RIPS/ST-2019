@@ -1,58 +1,99 @@
 import cv2
 import matplotlib.pyplot as plt
-import skimage as skimage
-import skimage.feature as  ski_f
-from skimage import data, color, exposure
-from functools import partial
 import numpy as np
 from numpy import linalg as LA
 import sys
-import time
 import cvxpy as cp
 import timeit
+from scipy import stats
 
 input_path = sys.argv[1]
 img = cv2.imread(input_path)
-# plt.imshow(img)
-# plt.show()
 
-width, height, channel = img.shape
-num_pixels = height * width
-feature_size = 3
+h,w,_ = img.shape
+target_width = h
+target_height = w
 
-mu = np.average(np.average(img, axis = 0), axis = 0)
-alpha = float(np.average(mu))
+ori_img = np.copy(img)
 
-def compute_salience(L, pixel):
-	mean_centered_pixel = pixel - mu
-	return LA.multi_dot([mean_centered_pixel, L, mean_centered_pixel])
 
-W = np.zeros([feature_size, feature_size])
-for i in range(feature_size):
-	for j in range(feature_size):
-		if i == j:
-			continue
-		else:
-			W[i, j] = 1.0 / (1 + np.power((mu[i] - mu[j]) / alpha, 2))
+# Compute the abnormality score for each pixel in the input img
+def compute_salience_matrix(img):
+	width, height,_ = img.shape
+	# num_pixels = width * height
+	feature_size = 3
 
-degree_arr = np.sum(W, axis = 0)
-D = np.diag(degree_arr)
-D_sqrt_inv = np.diag(1.0 / np.sqrt(degree_arr))
-L = D - W
-L_sym = LA.multi_dot([D_sqrt_inv, L, D_sqrt_inv])
+	mu = np.average(np.average(img, axis = 0), axis = 0)
+	alpha = float(np.average(mu))
 
-# print(L_sym)
+	W = np.zeros([feature_size, feature_size])
+	for i in range(feature_size):
+		for j in range(feature_size):
+			if i == j:
+				continue
+			else:
+				W[i, j] = 1.0 / (1 + np.power((mu[i] - mu[j]) / alpha, 2))
 
-# start = timeit.default_timer()
-# img_vec = img.reshape([-1, 3])
-# compute_salience_given_L = partial(compute_salience, L_sym)
-# salience_matrix = np.apply_along_axis(compute_salience_given_L, 1, img_vec).reshape([width, height])
-# stop = timeit.default_timer()
-# print('Time: ', stop - start)
+	degree_arr = np.sum(W, axis = 0)
+	D = np.diag(degree_arr)
+	D_sqrt_inv = np.diag(1.0 / np.sqrt(degree_arr))
+	L = D - W
+	L_sym = LA.multi_dot([D_sqrt_inv, L, D_sqrt_inv])
 
-salience_matrix = np.empty([width, height])
-for i in range(width):
-	for j in range(height):
-		salience_matrix[i, j] = compute_salience(L_sym, img[i,j,:])
+	img = img.astype(float)
 
-print(salience_matrix)
+	img[:,:,0] = img[:,:,0] - mu[0]
+	img[:,:,1] = img[:,:,1] - mu[1]
+	img[:,:,2] = img[:,:,2] - mu[2]
+
+
+	z2 = np.einsum("ijk, lk -> ijl", img, L)
+	salience_matrix = np.einsum("ijk, ijk -> ij", img, z2)
+
+	return salience_matrix
+
+
+
+
+
+
+salience_matrix = compute_salience_matrix(img)
+salience_list = np.reshape(salience_matrix, [h*w])
+var = np.var(salience_list)
+std = np.sqrt(var)
+salience_threshold = max(np.mean(salience_list) + 2 * std, 6000)
+
+newimg = np.zeros([target_width, target_height, 3])
+
+newimg[salience_matrix >salience_threshold] = 255
+# Plot the results
+fig, axes = plt.subplots(1, 2, figsize=(15, 5), sharex=True, sharey=True)
+ax = axes.ravel()
+
+ax[0].imshow(ori_img)
+ax[0].set_title('Input image')
+ax[1].imshow(newimg)
+ax[1].set_title('Pixels with high anomaly measure')
+plt.show()
+
+print(newimg.shape)
+print(ori_img.shape)
+
+ori_img[np.where(newimg == 0)] = 0
+flat = ori_img.flatten()
+
+zz = np.count_nonzero(flat)
+p = stats.mode(flat[np.nonzero(flat)])
+print(zz, p)
+
+plt.imshow(ori_img)
+plt.show()
+
+
+
+
+
+
+
+
+
