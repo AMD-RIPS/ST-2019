@@ -1,66 +1,49 @@
-import math
 import numpy as np
-import matplotlib.pyplot as plt
 import cv2
-import random
-import time
+import sklearn
+import sys
+import os
 import pickle
-from sklearn import neighbors
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn import svm
-from sklearn import tree
-from sklearn.decomposition import PCA
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
-
-def get_flat_FFT(X_test):
-  dim = (480,270)
-
-  X_list = []
-
-  for i in range(X_test.shape[0]):
-    ori_img = X_test[i]
-    gray = cv2.cvtColor(ori_img, cv2.COLOR_BGR2GRAY)
-    f = np.fft.fft2(gray)
-    fshift = np.fft.fftshift(f)
-    magnitude_spectrum = 20*np.log(np.abs(fshift))
-    img = cv2.resize(magnitude_spectrum, dim)
-    X_list.append(img)
-	
-  X_resized = np.asarray(X_list)
-	
-
-  test_list = [] 
-  for i in range(X_resized.shape[0]):
-    img = X_resized[i].flatten()
-    test_list.append(img)
-
-  X_test = np.asarray(test_list)
-
-  return X_test
+from PIL import Image
 
 
+def test(images):
+    model_f='shape_test/modelLogisticShape.pkl'
+    return np.array(pred(images,model_f))
 
+def fouriertransform(img):
+    f=np.fft.fft2(img)
+    fshift=np.fft.fftshift(f)
+    magnitude_spectrum=20*np.log(np.abs(fshift))
+    return magnitude_spectrum
+def fourierwindow(img):
+    f=np.fft.fft2(img)
+    fshift=np.fft.fftshift(f)
+    newarray=np.zeros((1080,1920),dtype=complex)
+    for y in list(range(img.shape[0])):
+        for x in list(range(img.shape[1])):
+            if((y<200 or y>900) and (x<200 or x>1700)):
+                newarray[y,x]=fshift[y,x]
+    newarray=np.fft.ifftshift(newarray)
+    newarray=np.fft.ifft2(newarray)
+    image=Image.fromarray(newarray.astype(np.uint8))
+    image=np.array(image)
+    return image
 
-def test(X_test):
-	# Apply FFT and flatten the matrix 
-  t1 = time.time()
-  X_test_FFT = get_flat_FFT(X_test)
-  t2 = time.time()
- # print('Transform Time for shapes: ', t2-t1)
+def pred(array_f,model_f):
+    buff=array_f
+    test=np.zeros((len(buff),2*480*270),dtype=np.uint8)
 
-	# Load PCA / CLF models
-  with open('shape_test/shapes-PCA-300.pkl', 'rb') as file:
-    pca = pickle.load(file)
-  with open('shape_test/shapes-LR-300.pkl', 'rb') as file:
-    clf = pickle.load(file)
+    for i in list(range(len(buff))):
+        img=buff[i]
+        img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        img_fft=fouriertransform(img)
+        img_fft=cv2.resize(img_fft,(img_fft.shape[1]//4,img_fft.shape[0]//4))
+        img=fourierwindow(img)
+        img=cv2.resize(img,(img.shape[1]//4,img.shape[0]//4))
+        test[i]=np.append(img_fft.flatten(),img.flatten())
 
-  # Apply PCA and make predictions
-  t1 = time.time()
-  X_pca = pca.transform(X_test_FFT)
-  y_pred = clf.predict(X_pca)
-  t2 = time.time()
- # print('Remaining Time for shapes: ', t2-t1)
-
-  return y_pred
+    model=pickle.load(open(model_f,'rb'))
+    predictions=model.predict(test)
+    # print(predictions.shape)
+    return predictions

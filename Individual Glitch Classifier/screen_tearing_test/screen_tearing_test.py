@@ -25,7 +25,7 @@ def HOG(img, norm = 'L2', ppc = 10, cpb = 3):
 
 def test(images):
     glitch = "screen_tearing_test/screen_tearing"
-    pkl_filename = glitch + "_LR_85.pkl"
+    pkl_filename = "screen_tearing_test/screen_tearing_LR_85.pkl"
     images = np.array([resize(img) for img in images])
     images = np.array([HOG(img) for img in images])
 

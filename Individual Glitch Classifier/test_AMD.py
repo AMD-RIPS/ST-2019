@@ -7,6 +7,7 @@ import time
 import glob
 import tensorflow as tf
 import os, os.path
+import gc
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
@@ -21,29 +22,44 @@ normal_directory = "/home/IPAMNET/pdavarmanesh/Documents/images/new_heldout_test
 corrupted_directory = "/home/IPAMNET/pdavarmanesh/Documents/images/new_heldout_testing/glitched/"
 
 
-glitches = [ "morse_code", "parallel_lines",
-            "shader", "line_pixelation",  "dotted_line",
+glitches = ["shape", "line_pixelation",  "shader", "morse_code", "parallel_lines", "dotted_line",
              "stuttering", "triangulation","discoloration",
-              "random_patch", "shape"]  # "screen_tearing",  "texture_popin"
+              "random_patch",  "screen_tearing"] ##screen tearing must come last
 
-images_list = []
-
+normal_list = []
+corrupted_list = []
+true_labels = []
 
 print('loading the images...')
-images_list.append(np.array([cv2.imread(img) for img in glob.glob(normal_directory + "/*.png")]))
-true_labels = np.zeros(len(images_list[0]))
-for i, glitch in enumerate(glitches):
+normal = ([cv2.imread(img) for img in glob.glob(normal_directory + "/*.png")])
+for i in range(0,1650,150):
+    normal_list.append(np.array(normal[i:i+150]))
+del normal
+gc.collect()
+true_labels.append(np.zeros(1650))
+
+
+for i, glitch in enumerate(glitches[:-1]):
     with open(corrupted_directory + glitch + '/X.pkl', 'rb') as file:
         corrupted_images = pickle.load(file)
-        images_list.append(corrupted_images[:200])
-        true_labels = np.append(true_labels, np.ones(200)*(i+1))
-        
-print(np.unique(true_labels))
-print(len(images_list))
-print(len(images_list[-1]))
+        corrupted_list.append(np.array(corrupted_images[:150]))
+        print(glitch, i+1)
+        true_labels = np.append(true_labels, np.ones(150)*(i+1))
+
+
+ST = ([cv2.imread(img) for img in glob.glob(corrupted_directory + 'screen_tearing' + "/*.png")])
+true_labels = np.append(true_labels, np.ones(150)*11)
+corrupted_list.append(np.array(ST[:150]))
+del ST
+gc.collect()
+
+#print(np.unique(true_labels))
+print('Extracted {} normal emages and {} of each glitch'.format(1650, 150))
+print(len(normal_list), len(corrupted_list))
+print(len(true_labels))
 
 print("loaded the images...")
-ens_pred = np.zeros((len(glitches), len(true_labels)))
+ens_pred = np.zeros((len(glitches),len(true_labels) ))
 
 gbl = globals()
 
@@ -53,27 +69,43 @@ for i, glitch in enumerate(glitches):
     filename =  glitch + "_test." +  glitch + "_test"
     gbl[filename] = importlib.import_module(filename)
     pred = np.array([])
-    for images in images_list:
-         pred = np.append(pred, gbl[filename].test(images[:10]))####################
+    for images in normal_list:
+         pred = np.append(pred, gbl[filename].test(images)) 
+    for images in corrupted_list:
+         pred = np.append(pred, gbl[filename].test(images))
+         print(pred.shape)
+         print(pred)
+    
     ens_pred[i] = pred
     
     print('tested ', glitch, ' which predicted ', np.sum(pred) , 'in {} minutes'.format((time.time()-start)/60))
     
+    print(confusion_matrix(true_labels, pred))
     
+    labels = (true_labels == (i+1)) * 1 #bc i starts at 0 glitch labels start at 1
+    print(confusion_matrix(labels, pred))
+    idx = np.arange(len(labels))
+    print(len(idx), len(pred), len(labels))
+    false_neg_idx = idx[(pred - labels) == -1]
+    false_pos_idx = idx[(pred - labels) == 1]
+    """
+    print(pred[0:20])
+    print(labels[0:20])
+    print(np.sum(labels))
+    print(len(false_neg_idx))
+    print(len(false_pos_idx))
+    print(np.sum(np.logical_and(pred == labels, pred == 1)))
     
-    labels = [true_labels == (i+1)] * 1 #bc i starts at 0 glitch labels start at 1
-    false_neg_idx = (pred - labels) == -1
-    false_pos_idx = (pred - labels) == 1
-    for idx in false_neg_idx:
+    for idx in false_neg_idx[:10]:
         list_idx = idx // 200
         img_idx = idx % 200
         cv2.imwrite('false_negatives/'+ glitch + "_"+ str(idx) +'.jpg', images_list[list_idx][img_idx])
     
-    for idx in false_pos_idx:
+    for idx in false_pos_idx[:10]:
         list_idx = idx // 200
         img_idx = idx % 200
         cv2.imwrite('false_positives/'+ glitch + "_"+ str(idx) +'.jpg', images_list[list_idx][img_idx])
-  
+    """
   
 
 np.save("ens_pred.npy", ens_pred)

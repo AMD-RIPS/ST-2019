@@ -48,12 +48,12 @@ def test(X_test):
   t1 = time.time()
   X_test_FFT = get_flat_FFT(X_test)
   t2 = time.time()
-  print('Transform Time for dots: ', t2-t1)
+ # print('Transform Time for dots: ', t2-t1)
 
 	# Load PCA / CLF models
-  with open('dots_test/dots-PCA-300.pkl', 'rb') as file:
+  with open('dotted_line_test/dots-PCA-300.pkl', 'rb') as file:
     pca = pickle.load(file)
-  with open('dots_test/dots-LR-300.pkl', 'rb') as file:
+  with open('dotted_line_test/dots-LR-300.pkl', 'rb') as file:
     clf = pickle.load(file)
 
   # Apply PCA and make predictions
@@ -61,6 +61,6 @@ def test(X_test):
   X_pca = pca.transform(X_test_FFT)
   y_pred = clf.predict(X_pca)
   t2 = time.time()
-  print('Remaining Time for dots: ', t2-t1)
+ # print('Remaining Time for dots: ', t2-t1)
 
   return y_pred
