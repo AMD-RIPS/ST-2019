@@ -1,5 +1,12 @@
 ## Important Note (Please READ):
 
+Run the following two commands to install the required packages, or to install all the packages listed in "setup.txt".
+
+chmod +x install_packages.sh
+bash install_packages.sh
+
+
+
 Some model files (e.g. PCA) are missing from the folders because the file size is too big.
 
 For the model to run without error, please go to:
