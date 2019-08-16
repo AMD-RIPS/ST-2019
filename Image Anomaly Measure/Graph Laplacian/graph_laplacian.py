@@ -63,31 +63,27 @@ var = np.var(salience_list)
 std = np.sqrt(var)
 salience_threshold = max(np.mean(salience_list) + 2 * std, 6000)
 
-newimg = np.zeros([target_width, target_height, 3])
+newimg = np.copy(ori_img)
 
-newimg[salience_matrix >salience_threshold] = 255
+newimg[salience_matrix <= salience_threshold] = 0
+
+
 # Plot the results
 fig, axes = plt.subplots(1, 2, figsize=(15, 5), sharex=True, sharey=True)
 ax = axes.ravel()
+
+
 
 ax[0].imshow(ori_img)
 ax[0].set_title('Input image')
 ax[1].imshow(newimg)
 ax[1].set_title('Pixels with high anomaly measure')
+# ax[2].imshow(ori_img)
+# ax[2].set_title('Pixels with high anomaly measure (in original color)')
 plt.show()
 
-print(newimg.shape)
-print(ori_img.shape)
 
-ori_img[np.where(newimg == 0)] = 0
-flat = ori_img.flatten()
 
-zz = np.count_nonzero(flat)
-p = stats.mode(flat[np.nonzero(flat)])
-print(zz, p)
-
-plt.imshow(ori_img)
-plt.show()
 
 
 
