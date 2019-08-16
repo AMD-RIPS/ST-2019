@@ -58,7 +58,7 @@ def compute_salience_matrix(img):
 
 
 salience_matrix = compute_salience_matrix(img)
-salience_list = np.reshape(salience_matrix, [h*w])
+salience_list = np.reshape(salience_matrix, [-1])
 var = np.var(salience_list)
 std = np.sqrt(var)
 salience_threshold = max(np.mean(salience_list) + 2 * std, 6000)
