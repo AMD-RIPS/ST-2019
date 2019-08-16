@@ -92,7 +92,7 @@ def classify(img):
 	salience_threshold = max(np.mean(salience_list) + 2 * std, 6000)
 
 
-	interval = h // 100
+	interval = h // 50
 
 	p[salience_matrix > salience_threshold] = 1
 
@@ -112,7 +112,7 @@ def test(X):
 
 	for i in range(n):
 		# print(classify(X[i,:,:,:]))
-		rt.append((classify(X[i,:,:,:]) > 0.72)*1)
+		rt.append((classify(X[i,:,:,:]) > 0.85)*1)
 
 	return np.asarray(rt)
 
