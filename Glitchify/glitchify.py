@@ -413,8 +413,9 @@ if __name__ == '__main__':
 		new_height = int(options.new_height)
 		new_width = int(options.new_width)
 
-	if options.output_type == 'video' or options.output_type == 'Video':
-		is_video = True
+	# if options.output_type == 'video' or options.output_type == 'Video':
+	# 	is_video = True
+	is_video = False
 
 	if options.arg1 is not None and options.arg2 is not None:
 		is_bound_specified = True
