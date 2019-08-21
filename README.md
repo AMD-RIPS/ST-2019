@@ -7,7 +7,13 @@ Defect Prediction Code and Software Testing Work
 This work includes generating corrupted images by inserting several type of artifacts to images/videos and using the "ensemble" model to classify normal and corrupted images.
 
 
-Programs to generate corrupted images are under "Glitchify" folder. Programs to classify images are under "Ensemble" folder. Other methods that we have explored are included in the "Experiment" folder. Some old tools or models are in the "Archive" folder.
+Our program to generate corrupted images are under "Glitchify" folder. 
+
+Programs to classify images are under "Ensemble" folder. 
+
+Other methods that we have explored are included in the "Experiment" folder. 
+
+Some old tools and outdated models are in the "Archive" folder.
 
 
 ## Setup:
