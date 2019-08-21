@@ -1,0 +1,55 @@
+### Installing python3 ###
+
+1. sudo apt-get install python3.6
+
+
+### Installing pip ###
+
+1. sudo apt-get install python3-pip
+
+
+### Installing Tensorflow ###
+
+1. sudo pip3 install tensorflow
+
+
+### Installing open-cv ###
+
+1. sudo pip3 install opencv-python
+
+
+### Installing matplotlib ###
+
+1. sudo pip3 install matplotlib
+
+
+### Installing numpy ###
+
+1. sudo pip3 install numpy
+
+
+### Installing imutils###
+
+1. sudo pip3 install imutils
+
+
+### Installing scipy ###
+
+1. sudo pip3 install scipy
+
+
+### Installing scikit-image ###
+
+1. sudo pip3 install scikit-image
+
+
+### Installing scikit-learn ###
+
+1. sudo pip3 install scikit-learn
+
+
+### Installing Pillow ###
+
+1. sudo pip3 install Pillow
+
+
