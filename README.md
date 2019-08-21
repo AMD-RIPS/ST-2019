@@ -20,3 +20,14 @@ Run the following two commands to install the required packages, or to install a
 
 chmod +x install_packages.sh
 bash install_packages.sh
+
+
+## Contributers:
+
+Parmida Davarmanesh, University of Michigan
+Kuanhao Jiang, University of Pennsylvania
+Tingting Ou, Johns Hopkins University
+Artem Vysogorets, University of Massachusetts Amherst
+
+Shantanu Joshi, University of California, Los Angeles
+Nicholas Malaya, AMD Research
