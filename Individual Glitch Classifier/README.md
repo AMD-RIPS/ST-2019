@@ -1,10 +1,19 @@
+## Description:
+
+This program tests the ensemble model which is based on individual models for each type of artifact. 
+
+
+## Examples:
+
+python3  test_AMD.py  <normal_images_directory> <glitched_images_directory>
+
+
 ## Important Note (Please READ):
 
 Run the following two commands to install the required packages, or to install all the packages listed in "setup.txt".
 
 chmod +x install_packages.sh
 bash install_packages.sh
-
 
 
 Some model files (e.g. PCA) are missing from the folders because the file size is too big.
@@ -14,6 +23,8 @@ For the model to run without error, please go to:
 https://drive.google.com/open?id=1j9NC1SFPMl6BIZFIeQQjyLmk3VEaqGhf
 
 Download all the .pkl files, and put them into the correct folders respectively.
+
+
 
 ### PCA models
 
