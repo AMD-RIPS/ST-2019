@@ -1,3 +1,5 @@
+## Glitchify
+
 #### Examples
 
 python3 glitchify.py -i input_folder -t discoloration
