@@ -7,9 +7,9 @@ Automated Glitch Detection in Video Games
 This work includes generating corrupted images by inserting several type of artifacts to images/videos and using the "ensemble" model to classify normal and corrupted images.
 
 
-Our program to generate corrupted images are under "Glitchify" folder. 
+Our program to generate corrupted images is under the "Glitchify" folder. 
 
-Programs to classify images are under "Ensemble" folder. 
+The model to classify images (either training first or merely testing) is under the "Ensemble" folder. 
 
 Other methods that we have explored are included in the "Experiment" folder. 
 
