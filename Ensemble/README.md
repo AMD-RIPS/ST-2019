@@ -1,11 +1,17 @@
 ## Description:
 
-This program tests the ensemble model which is based on individual models for each type of artifact. 
+This program can train and test the ensemble model which is built upon individual models for 10 types of artifact. 
 
 
 ## Examples:
 
-python3  test_AMD.py  <normal_images_directory> <glitched_images_directory>
+### For training:
+
+python3  train_test_ensemble.py  <normal_images_directory> <glitched_images_directory> train
+
+### For testing:
+
+python3  train_test_ensemble.py  <normal_images_directory> <glitched_images_directory> test
 
 
 ## Important Note (Please READ):
