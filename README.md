@@ -1,5 +1,5 @@
 # ST-2019
-Defect Prediction Code and Software Testing Work
+Automated Glitch Detection in Video Games
 
 
 ## Description:
