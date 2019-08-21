@@ -15,6 +15,7 @@ Programs to generate corrupted images are under "Glitchify" folder. Programs to 
 Run the following two commands to install the required packages, or to install all the packages listed in "setup.txt".
 
 chmod +x install_packages.sh
+
 bash install_packages.sh
 
 
