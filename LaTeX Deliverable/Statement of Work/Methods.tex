@@ -1,0 +1,40 @@
+\documentclass[12pt]{article}
+\usepackage{url}
+\usepackage[left=1.1 in, right=1.1 in, top=1.1 in, bottom = 1.1in]{geometry}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{cite}
+
+\begin{document}
+
+
+\subsection{Methods}
+\subsubsection{Supervised Learning}
+With enough labelled data, we can train supervised learning models to predict the existence of glitches. One possible extension is to use supervised learning to predict the existence of certain types of glitches.
+
+\subsubsection{Convolutional Neural Network (CNN)}
+Since the input data are mostly images and videos, we can use convolutional neural network to capture the features. We plan to use the prediction of a vanilla CNN as the baseline for our project. Possible extensions to CNN are residual neural network and inception neural network, which may yield higher prediction accuracy by enabling deeper networks.\\
+
+\noindent Another possible extension is to predict whether two images have the same label. Given data consisting of consecutive frames, we can pair each glitched frame with its nearby frames. A pair is labelled as 0 if the two images are both glitched or non-glitched, and 1 otherwise. In this way, we will have relatively balanced data to train the CNN. During testing, we continuously feed pair of nearby frames to the CNN, and if the CNN outputs 1 as the label, then it is likely that a glitched image occurs. This approach requires video as training and testing data.
+
+\subsection{Unsupervised Learning/Semi-supervised Learning}
+In order to identify rare glitches that are not yet identified or difficult to manually produce, we also employ unsupervised learning algorithms.
+
+\subsubsection{Autoencoder}
+
+Autoencoders can be used to reduce data dimensionality. Reduced data can be fed to supervised learning algorithms (such as CNN, support vector machine, linear regression, etc.) to make predictions. Possible extensions including using CNN-based Autoencoders.\\
+
+\noindent Given an autoencoder trained on non-glitched images, we can remove patches from testing images and then fed the remaining images to the autoencoder. By comparing the removed patches with the reconstructed patches, we can predict whether the removed patches contain anomalous features (i.e. glitches). 
+
+\subsubsection{Generative Adversarial Network (GAN)}
+
+
+\subsubsection{Principle Component Analysis (PCA)}
+
+\subsubsection{One-class Support Vector Machine}
+After applying autoencoder or PCA to reduce the data dimensionality, we can use one-class SVM to learn the region in which unglitched data lie and thus to identify outliers.
+
+
+
+\end{document}

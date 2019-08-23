@@ -1,0 +1,14 @@
+,Artifact,Feature Extraction,Model,Training Time (in minutes),Performance,Trainin Data Dimension
+,Shapes ,,,,,
+,Line Pixelation ,"Anomaly 
+Measure + 
+Dilation",Threshold,0,Acc = 0.94           Pr = 0.92        Re = 0.94,      None
+,Shader ,HOG,Logistic Regression,4.3 (HOG) + 1 (LR),,"N = 2400         M = 103,500"
+,Morse Code ,,,,,
+,Parallel Lines ,FT Resized,PCA(300) -> Logistic Regression,3 (Resize FFT)  + 0.5 (flatten) + 1 (PCA),Acc = 0.98      Pr = 0.97       Re = 0.98,N =  2400    M = 129600
+,Dotted Lines ,FT Resized,PCA(300) -> Logistic Regression,3 (Resize FFT)  + 0.5 (flatten) + 1.5 (PCA),Acc = 0.89      Pr = 0.87       Re = 0.92,N =  2400    M = 129600
+,Stuttering ,FT Resized,PCA(300) -> Logistic Regression,3 (Resize FFT)  + 0.5 (flatten) + 1 (PCA),Acc = 0.95      Pr = 0.94       Re = 0.93,N =  2400    M = 129600
+,Triangulation ,FT Resized,PCA(400) -> LDA,3 (Resize FFT)  + 0.5 (flatten) + 2 (PCA),Acc = Pr = Re = 1.0,N =  2530    M = 129600
+,Discoloration ,FT Resized,PCA(500) -> Logistic Regression,3 (Resize FFT)  + 0.5 (flatten) + 1.5 (PCA),Acc = 0.94      Pr = 0.90       Re = 0.95,N =  2400    M = 129600
+,Random Patch ,,,,,
+,Screen Tearing,Hog,Logistic Regression,3.5 (HOG) + 0.75 (LR),Acc = 0.85          Pr = 0.78       Re = 0.80,"N = 2013         M = 124,200"

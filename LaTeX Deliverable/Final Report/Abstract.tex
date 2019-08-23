@@ -1,0 +1,17 @@
+
+% don't display the page number
+%\thispagestyle{empty}
+
+
+
+\vspace{24pt}
+
+
+The video game industry is the most influential form of entertainment in America, producing \$43B in revenue in 2018. Regardless of how advanced the gaming hardware and software are, gameplay is often tainted with graphics errors and screen artifacts. Currently, artifact detection is a labor intensive process, where artifacts are reported individually by users who experience them. Further, there is currently a lack of consolidated framework for systematically cataloging and analyzing graphics corruptions. \\
+
+\noindent
+This project intends to apply machine learning to the creation of an automated software that is capable of detecting graphics corruptions in video games. Given a limited sample of corruption examples provided by our sponsoring company, Advanced Micro Devics (AMD), 13 most common screen artifacts were identified, described and recreated using Python programming language. We then created a dataset of 50,000 frames consisting of both normal gameplay frames as well as synthetically obtained corrupted frames of 12 different types. Feature representation of the data included discrete Fourier transformation, histogram of oriented gradients and graph Laplacian. Various combinations of these features were used to train machine learning models that identify individual classes of graphics corruptions and that later were assembled into a single mixed experts ``ensemble'' classifier. The ensemble classifier was tested on heldout test sets, and produced an accuracy of 84\% on the games it had seen before, and 69\% on games it had never seen before.
+
+
+%The video game industry is the most influential form of entertainment in America. Regardless of how advanced the gaming hardware and software are, gameplay is often tainted with graphics errors and screen artifacts which are labor intensive to detect and fix. In this research, we have automated the process of anomaly detection and classification by developing machine learning models that are able to label each frame of a video game as glitched or normal. Since this has never been done before, there is a lack of labeled and catalogued gaming data. we first generated our own database by extracting gaming images from gameplay videos and added realistic-looking artifacts to those images. Then we explored various ways to extract features from the images, such as Fourier transform, the histogram of gradients and the graph Laplacian. Using the extracted features, we built eleven classifiers to detect different types of glitches respectively. Combining the individual classifiers through a logistic regression, we constructed an ensemble model to detect all eleven types of glitches.
+
