@@ -1,5 +1,9 @@
 ## Glitchify
 
+The AMD-owned generator source code is available under the [MIT license](../LICENSE).
+Bundled input images and videos are excluded; see [license scope](../THIRD_PARTY.md).
+For the accompanying paper and citation, see the [repository README](../README.md#accompanying-paper).
+
 #### Examples
 
 python3 glitchify.py -i input_folder -t discoloration

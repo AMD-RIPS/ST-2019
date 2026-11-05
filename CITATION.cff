@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software in research, please cite the accompanying paper
+  using the preferred citation below. Citation is requested, not an additional
+  condition of the MIT license.
+title: "ST-2019: Automated Glitch Detection in Video Games"
+type: software
+repository-code: "https://github.com/AMD-RIPS/ST-2019"
+authors:
+  - family-names: Davarmanesh
+    given-names: Parmida
+  - family-names: Jiang
+    given-names: Kuanhao
+  - family-names: Ou
+    given-names: Tingting
+  - family-names: Vysogorets
+    given-names: Artem
+  - family-names: Joshi
+    given-names: Shantanu
+  - family-names: Malaya
+    given-names: Nicholas
+preferred-citation:
+  type: article
+  title: "Automating Artifact Detection in Video Games"
+  authors:
+    - family-names: Davarmanesh
+      given-names: Parmida
+    - family-names: Jiang
+      given-names: Kuanhao
+    - family-names: Ou
+      given-names: Tingting
+    - family-names: Vysogorets
+      given-names: Artem
+    - family-names: Ivashkevich
+      given-names: Stanislav
+    - family-names: Kiehn
+      given-names: Max
+    - family-names: Joshi
+      given-names: "Shantanu H."
+    - family-names: Malaya
+      given-names: Nicholas
+  year: 2020
+  date-published: "2020-11-30"
+  journal: arXiv
+  doi: "10.48550/arXiv.2011.15103"
+  url: "https://arxiv.org/abs/2011.15103"
